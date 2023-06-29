@@ -1,0 +1,77 @@
+const formValidationSchema = z.object({
+  listName: z
+    .string()
+    .min(1, { message: "List name is required" })
+    .refine((val) => {
+      return !val.includes(" ");
+    }, "List name must not contain spaces"),
+  addresses: addressValidator,
+});
+
+export default function Home() {
+  const form = useForm<z.infer<typeof formValidationSchema>>({
+    resolver: zodResolver(formValidationSchema),
+    defaultValues: {
+      listName: nanoid(4),
+    },
+  });
+
+  return (
+    <div className="flex h-full items-center justify-center">
+      <ClientOnly>
+        <Card>
+          <CardHeader>
+            <CardTitle>Welcome to Monitorus!</CardTitle>
+            <CardDescription>
+              Create your first monitor list. You can add more later.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="grid gap-3"
+              >
+                <FormField
+                  control={form.control}
+                  name="listName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>List Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="list name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="addresses"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Addresses</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="one per line or coma separated."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Continue</Button>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button asChild variant="ghost">
+              <Link href="/lists">Cancel</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+      </ClientOnly>
+    </div>
+  );
+}

@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1688021926464,
+      "tag": "0000_wide_vertigo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1688022333069,
+      "tag": "0001_left_silvermane",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1688033005872,
+      "tag": "0002_naive_sunspot",
+      "breakpoints": true
+    }
+  ]
+}

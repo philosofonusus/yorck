@@ -1,0 +1,42 @@
+interface ListEntryProps {
+  listName: string;
+  listCount: number;
+  onListDelete: () => void;
+  listId: string;
+  onListSelect: () => void;
+}
+
+const ListEntry: React.FC<ListEntryProps> = ({
+  listName,
+  onListSelect,
+  listId,
+  onListDelete,
+  listCount,
+}) => {
+  return (
+    <div
+      onClick={() => onListSelect()}
+      className="group flex cursor-pointer items-center space-x-4 rounded-md border p-4 hover:bg-accent"
+    >
+      <StyledAvatar name={listId} />
+      <div className="flex-1 space-y-1">
+        <p className="text-sm font-medium leading-none">{listName}</p>
+        <p className="text-sm text-muted-foreground">
+          There {listCount <= 1 ? "is" : "are"}{" "}
+          <span className="text-accent-foreground">{listCount}</span>{" "}
+          {listCount === 1 ? "item" : "items"} in this list.
+        </p>
+      </div>
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+          onListDelete();
+        }}
+        variant="outline"
+        className="bg-a hidden h-8 w-8 cursor-pointer rounded-full p-0 group-hover:flex"
+      >
+        <TrashIcon className=" h-6 w-6 text-accent-foreground" />
+      </Button>
+    </div>
+  );
+};
