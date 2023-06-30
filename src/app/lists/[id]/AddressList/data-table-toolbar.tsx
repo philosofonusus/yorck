@@ -35,11 +35,11 @@ export function DataTableToolbar<TData>({
         <AddAddressesDialog listId={listId} />
 
         <Toggle
-          pressed={JSON.parse(
-            (table.getColumn("select")?.getFilterValue() as string) ?? "false"
-          )}
+          pressed={
+            (table.getColumn("select")?.getFilterValue() as boolean) ?? false
+          }
           onPressedChange={(value) =>
-            table.getColumn("select")?.setFilterValue(JSON.stringify(value))
+            table.getColumn("select")?.setFilterValue(value ? true : undefined)
           }
           className="h-8 w-8 p-0 flex items-center justify-center"
         >

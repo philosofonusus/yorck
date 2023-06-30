@@ -12,7 +12,10 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deleteAddressesFromListAction } from "@/app/listActions";
+import {
+  deleteAddressesFromListAction,
+  toggleListFavoriteAction,
+} from "@/app/listActions";
 import toast from "react-hot-toast";
 import { listInfoAtom } from "./atoms";
 import { useRouter } from "next/navigation";
@@ -42,7 +45,23 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() => {
+            toast.promise(
+              toggleListFavoriteAction({
+                //@ts-ignore
+                listId: listInfo.id,
+                //@ts-ignore
+                address: rowData.address,
+              }).then(() => router.refresh()),
+              {
+                loading: "Toggling favorite...",
+                success: "Favorite toggled",
+                error: "Failed to toggle favorite",
+              }
+            );
+          }}
+        >
           <Star className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
           Favorite
         </DropdownMenuItem>

@@ -4,6 +4,32 @@ import { addressLists } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
+export async function toggleListFavoriteAction({
+  listId,
+  address,
+}: {
+  listId: string;
+  address: string;
+}) {
+  const list = await db
+    .select()
+    .from(addressLists)
+    .where(eq(addressLists.id, listId))
+    .then((res) => res[0]);
+
+  if (!list) {
+    throw new Error("List not found");
+  }
+  const newFavorites = (list.favorites as string[]).includes(address)
+    ? (list.favorites as string[]).filter((a) => a !== address)
+    : [...(list.favorites as string[]), address];
+
+  await db
+    .update(addressLists)
+    .set({ favorites: newFavorites })
+    .where(eq(addressLists.id, listId));
+}
+
 export async function deleteAddressesFromListAction({
   listId,
   addresses,
@@ -29,9 +55,18 @@ export async function deleteAddressesFromListAction({
     ),
   ];
 
+  const newFavorites = [
+    ...new Set(
+      (Array.isArray(list.favorites)
+        ? (list.favorites as string[])
+        : []
+      ).filter((address) => !addresses.includes(address))
+    ),
+  ];
+
   await db
     .update(addressLists)
-    .set({ addresses: newAddresses })
+    .set({ addresses: newAddresses, favorites: newFavorites })
     .where(eq(addressLists.id, listId));
 }
 
@@ -47,7 +82,7 @@ export async function addAddressesToListAction({
     .from(addressLists)
     .where(eq(addressLists.id, listId))
     .then((res) => res[0]);
-  console.log("🚀 ~ file: listActions.ts:19 ~ list:", list);
+
   if (!list) {
     throw new Error("List not found");
   }

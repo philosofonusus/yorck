@@ -71,8 +71,9 @@ export const users = mysqlTable(
 
 export const addressLists = mysqlTable("address_lists", {
   id: varchar("id", { length: 255 }).primaryKey().notNull(),
-  addresses: json("addresses"),
+  addresses: json("addresses").notNull().default("[]"),
   name: varchar("name", { length: 255 }).notNull(),
+  favorites: json("favorites").notNull().default("[]"),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
   synced_at: timestamp("synced_at"),

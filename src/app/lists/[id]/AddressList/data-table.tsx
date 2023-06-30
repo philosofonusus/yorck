@@ -75,12 +75,35 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  // sync list info with atom
   React.useEffect(() => {
     setListInfo({
       ...list,
       selectedRows: table.getSelectedRowModel().rows.map((el) => el.original),
     });
   }, [table, rowSelection, setListInfo, list]);
+
+  // sync favorites
+  React.useEffect(() => {
+    setRowSelection(
+      (list.favorites as string[]).reduce(
+        (
+          acc: {
+            [key: string]: boolean;
+          },
+          row
+        ) => {
+          acc[
+            (list.addresses as string[])
+              .findIndex((el) => el === row)
+              .toString()
+          ] = true;
+          return acc;
+        },
+        {}
+      )
+    );
+  }, [list.favorites, list.addresses]);
 
   return (
     <div className="space-y-4">

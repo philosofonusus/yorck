@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const listInfoAtom = atom({});
+export const listInfoAtom = atom<any>({});

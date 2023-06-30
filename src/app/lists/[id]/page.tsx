@@ -5,12 +5,14 @@ import { addressLists } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { ChevronLeft, CogIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { faker } from "@faker-js/faker";
 import Link from "next/link";
 
 import { ListNameInput } from "./ListNameInput";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "./AddressList/data-table";
 import { columns } from "./AddressList/columns";
+import StatsTab from "./Tabs/StatsTab";
 
 export default async function ListPage({
   params: { id: listId },
@@ -57,6 +59,13 @@ export default async function ListPage({
                 </Button>
               </div>
             </CardTitle>
+            <StatsTab />
+            <TabsContent value="portfolio">
+              <Card></Card>
+            </TabsContent>
+            <TabsContent value="transactions">
+              <Card></Card>
+            </TabsContent>
           </Tabs>
         </CardHeader>
         <CardContent>
@@ -65,8 +74,19 @@ export default async function ListPage({
             columns={columns}
             data={(list.addresses as string[]).map((address) => ({
               address,
-              usd_total: "1234",
+              isFavorite: (list.favorites as string[]).includes(address),
+              usd_total: faker.finance.amount(1000, 10000, 2),
               chains: ["eth"],
+              winrate:
+                faker.number.int({
+                  min: 1,
+                  max: 10,
+                }) /
+                faker.number.int({
+                  min: 1,
+                  max: 10,
+                }),
+              roi: faker.number.int(100),
             }))}
           />
         </CardContent>
