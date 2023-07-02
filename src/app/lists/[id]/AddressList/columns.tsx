@@ -77,7 +77,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
     cell: ({ row }) => {
       return (
         <span className="space-x-2 w-20">
-          {row.getValue("winrate").toFixed(2)}
+          {(row.getValue("winrate") as number).toFixed(2)}
         </span>
       );
     },
