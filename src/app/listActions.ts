@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/lib/db";
 import { addressLists } from "@/lib/db/schema";
+import { redis } from "@/lib/redis";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
@@ -63,6 +64,9 @@ export async function deleteAddressesFromListAction({
       ).filter((address) => !addresses.includes(address))
     ),
   ];
+  for (const address of addresses) {
+    await redis.del(`history_list:${address}`, `account:${address}`);
+  }
 
   await db
     .update(addressLists)

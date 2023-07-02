@@ -13,6 +13,8 @@ import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "./AddressList/data-table";
 import { columns } from "./AddressList/columns";
 import StatsTab from "./Tabs/StatsTab";
+import { redis } from "@/lib/redis";
+import { statsCalculator } from "@/lib/statsCalculator";
 
 export default async function ListPage({
   params: { id: listId },
@@ -30,6 +32,23 @@ export default async function ListPage({
   if (!list) {
     return <div>404</div>;
   }
+  const data = new Map(
+    Object.entries(
+      Object.assign(
+        {},
+        ...(await Promise.allSettled(
+          (list.addresses as string[]).map(async (address) => {
+            return {
+              [address]: {
+                account: await redis.get(`account:${address}`),
+                history_list: await redis.get(`history_list:${address}`),
+              },
+            };
+          })
+        ).then((res) => res.map((r: any) => r.value)))
+      )
+    )
+  );
 
   return (
     <div className="flex w-full items-center justify-center overflow-y-scroll py-6">
@@ -72,22 +91,31 @@ export default async function ListPage({
           <DataTable
             list={list}
             columns={columns}
-            data={(list.addresses as string[]).map((address) => ({
-              address,
-              isFavorite: (list.favorites as string[]).includes(address),
-              usd_total: faker.finance.amount(1000, 10000, 2),
-              chains: ["eth"],
-              winrate:
-                faker.number.int({
-                  min: 1,
-                  max: 10,
-                }) /
-                faker.number.int({
-                  min: 1,
-                  max: 10,
-                }),
-              roi: faker.number.int(100),
-            }))}
+            data={(list.addresses as string[])
+              .map((address) => {
+                const addressData = data.get(address);
+                let winrate = 0;
+                let roi = 0;
+                //@ts-ignore
+                if (addressData?.history_list) {
+                  //@ts-ignore
+                  const _result = statsCalculator(addressData?.history_list);
+                  winrate = _result.winrate;
+                  roi = _result.roi;
+                }
+                return {
+                  address,
+                  isFavorite: (list.favorites as string[]).includes(address),
+                  //@ts-ignore
+                  usd_total: addressData?.account?.usd_total,
+                  //@ts-ignore
+                  history_list: addressData?.history_list,
+                  chains: ["eth"],
+                  winrate,
+                  roi,
+                };
+              })
+              .filter(Boolean)}
           />
         </CardContent>
       </Card>

@@ -19,6 +19,7 @@ export type MonitoredAddress = {
   //   };
   isFavorite: boolean;
   winrate: number;
+  history_list: any[];
   roi: number;
   chains: string[];
 };

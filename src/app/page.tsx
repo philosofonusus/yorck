@@ -28,6 +28,7 @@ import ClientOnly from "./clientOnly";
 import { createListAction } from "./listActions";
 import toast from "react-hot-toast";
 import { revalidatePath } from "next/cache";
+import { monitofresh } from "@/services/monitofresh";
 
 const formValidationSchema = z.object({
   listName: z
@@ -48,11 +49,24 @@ export default function Home() {
   });
 
   async function onSubmit(values: z.infer<typeof formValidationSchema>) {
-    await toast.promise(createListAction(values), {
-      loading: "Creating list...",
-      success: "List created!",
-      error: "Something went wrong.",
-    });
+    await toast.promise(
+      monitofresh
+        .refreshAddressData([
+          ...new Set(
+            values.addresses
+              .split(/[\n,]/)
+              .map((address) => address.toLowerCase().trim())
+          ),
+        ])
+        .then(async () => {
+          await createListAction(values);
+        }),
+      {
+        loading: "Creating list...",
+        success: "List created!",
+        error: "Something went wrong",
+      }
+    );
     revalidatePath("/lists/");
   }
 

@@ -8,6 +8,8 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
+    UPSTASH_REDIS_URL: z.string().min(1),
+    UPSTASH_REDIS_PASSWORD: z.string().min(1),
   },
   /*
    * Environment variables available on the client (and server).
@@ -23,5 +25,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    UPSTASH_REDIS_URL: process.env.UPSTASH_REDIS_URL,
+    UPSTASH_REDIS_PASSWORD: process.env.UPSTASH_REDIS_PASSWORD,
   },
 });

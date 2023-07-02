@@ -28,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { addAddressesToListAction, createListAction } from "../../listActions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { monitofresh } from "@/services/monitofresh";
 
 const formValidationSchema = z.object({
   addresses: addressValidator,
@@ -42,11 +43,22 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formValidationSchema>) {
+    setIsCreateListOpen(false);
     await toast.promise(
-      addAddressesToListAction({
-        listId,
-        addresses: values.addresses,
-      }),
+      monitofresh
+        .refreshAddressData([
+          ...new Set(
+            values.addresses
+              .split(/[\n,]/)
+              .map((address) => address.toLowerCase().trim())
+          ),
+        ])
+        .then(async () => {
+          await addAddressesToListAction({
+            listId,
+            addresses: values.addresses,
+          });
+        }),
       {
         loading: "Adding addresses...",
         success: "Addresses added succesfully!",
@@ -54,7 +66,6 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
       }
     );
     router.refresh();
-    setIsCreateListOpen(false);
   }
   return (
     <Dialog open={isCreateListOpen} onOpenChange={setIsCreateListOpen}>
