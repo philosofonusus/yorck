@@ -5,7 +5,6 @@ import { addressLists } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { ChevronLeft, CogIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { faker } from "@faker-js/faker";
 import Link from "next/link";
 
 import { ListNameInput } from "./ListNameInput";
