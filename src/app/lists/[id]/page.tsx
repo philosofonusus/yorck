@@ -14,6 +14,7 @@ import { columns } from "./AddressList/columns";
 import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
+import PortfolioTab from "./Tabs/PortfolioTab";
 
 export default async function ListPage({
   params: { id: listId },
@@ -78,9 +79,8 @@ export default async function ListPage({
               </div>
             </CardTitle>
             <StatsTab />
-            <TabsContent value="portfolio">
-              <Card></Card>
-            </TabsContent>
+            {/*@ts-ignore*/}
+            <PortfolioTab data={data} />
             <TabsContent value="transactions">
               <Card></Card>
             </TabsContent>

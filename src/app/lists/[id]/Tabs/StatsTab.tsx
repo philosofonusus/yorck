@@ -3,7 +3,6 @@ import { useAtom } from "jotai";
 import { listInfoAtom } from "../AddressList/atoms";
 import { TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { list } from "postcss";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
