@@ -43,6 +43,7 @@ export function DataTable<TData, TValue>({
   data,
   list,
 }: DataTableProps<TData, TValue>) {
+  console.log("🚀 ~ file: data-table.tsx:46 ~ data:", data);
   const [listInfo, setListInfo] = useAtom(listInfoAtom);
   const [rowSelection, setRowSelection] = React.useState({});
 

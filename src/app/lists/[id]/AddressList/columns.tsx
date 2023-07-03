@@ -7,7 +7,7 @@ import { DataTableRowActions } from "./data-table-row-actions";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { Toggle } from "@/components/ui/toggle";
 import router from "next/navigation";
-import { toggleListFavoriteAction } from "@/app/listActions";
+import { toggleListFavoriteAction } from "@/app/_actions/list";
 import DataTableFavoriteStar from "./data-table-favorite-star";
 
 export type MonitoredAddress = {

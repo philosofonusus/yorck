@@ -4,7 +4,7 @@ const nextConfig = {
     domains: ["static.debank.com"],
   },
   experimental: {
-    serverComponentsExternalPackages: ["mysql2"],
+    // serverComponentsExternalPackages: ["mysql2"],
     serverActions: true,
   },
 };

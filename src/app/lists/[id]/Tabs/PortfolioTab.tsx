@@ -2,6 +2,7 @@
 
 import { TabsContent } from "@radix-ui/react-tabs";
 import { useAtom } from "jotai";
+import { toast } from "sonner";
 import { listInfoAtom } from "../AddressList/atoms";
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
@@ -13,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -65,15 +67,16 @@ const PortfolioTab: React.FC<PortfolioTabProps> = ({ data }) => {
                     <Tooltip>
                       <TooltipTrigger className="text-left">
                         <span
-                          onClick={() => copy(el.id)}
+                          onClick={() => {
+                            copy(el.id);
+                            toast.success("Copied to clipboard");
+                          }}
                           className="cursor-pointer text-sm font-semibold text-muted-foreground"
                         >
                           {el.optimized_symbol} ({el.chain})
                         </span>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        {value === el.id ? "Copied!" : el.id}
-                      </TooltipContent>
+                      <TooltipContent>{el.id}</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
 

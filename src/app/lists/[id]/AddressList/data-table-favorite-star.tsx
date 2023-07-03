@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import { listInfoAtom } from "./atoms";
 import { Star } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useAtom } from "jotai";
-import { toggleListFavoriteAction } from "@/app/listActions";
+import { toggleListFavoriteAction } from "@/app/_actions/list";
 
 const DataTableFavoriteStar = ({ address }: { address: string }) => {
   const router = useRouter();

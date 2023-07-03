@@ -61,7 +61,6 @@ export const statsCalculator = (history_list: any[]) => {
       position!.status = "closed";
     }
   }
-
   const winrate =
     positions
       .filter((el) => el.status === "closed")

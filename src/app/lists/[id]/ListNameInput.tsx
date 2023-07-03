@@ -1,9 +1,9 @@
 "use client";
 
-import { renameListAction } from "@/app/listActions";
+import { renameListAction } from "@/app/_actions/list";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useDebounce } from "usehooks-ts";
 
 interface ListNameInputProps {

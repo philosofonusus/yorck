@@ -108,16 +108,21 @@ export async function addAddressesToListAction({
 export async function createListAction({
   listName,
   addresses,
+  userId: userId,
 }: {
   listName: string;
+  userId: string;
   addresses: string;
 }) {
   await db.insert(addressLists).values({
     id: nanoid(),
     name: listName,
-    addresses: new Set(
-      addresses.split(/[\n,]/).map((address) => address.toLowerCase().trim())
-    ),
+    userId: userId,
+    addresses: [
+      ...new Set(
+        addresses.split(/[\n,]/).map((address) => address.toLowerCase().trim())
+      ),
+    ],
   });
 }
 

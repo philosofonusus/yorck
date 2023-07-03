@@ -15,8 +15,8 @@ import {
 import {
   deleteAddressesFromListAction,
   toggleListFavoriteAction,
-} from "@/app/listActions";
-import toast from "react-hot-toast";
+} from "@/app/_actions/list";
+import { toast } from "sonner";
 import { listInfoAtom } from "./atoms";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";

@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { CardHeader, Card, CardContent, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
 import { addressLists } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { ChevronLeft, CogIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,6 +15,8 @@ import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
 import PortfolioTab from "./Tabs/PortfolioTab";
+import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default async function ListPage({
   params: { id: listId },
@@ -23,10 +25,16 @@ export default async function ListPage({
     id: string;
   };
 }) {
+  const user = await currentUser();
+
+  if (!user) {
+    redirect("/signin");
+  }
+
   const list = await db
     .select()
     .from(addressLists)
-    .where(eq(addressLists.id, listId))
+    .where(and(eq(addressLists.id, listId), eq(addressLists.userId, user.id)))
     .then((res) => res[0]);
 
   if (!list) {

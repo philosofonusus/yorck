@@ -25,11 +25,12 @@ import { addressValidator } from "@/lib/addressValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { nanoid } from "nanoid";
 import { useForm } from "react-hook-form";
-import { createListAction } from "../listActions";
-import toast from "react-hot-toast";
+import { createListAction } from "../_actions/list";
+import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { monitofresh } from "@/services/monitofresh";
+import { useUser } from "@clerk/nextjs";
 
 const formValidationSchema = z.object({
   listName: z
@@ -43,6 +44,7 @@ const formValidationSchema = z.object({
 
 const CreateListDialog = () => {
   const [isCreateListOpen, setIsCreateListOpen] = useState(false);
+  const { user } = useUser();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formValidationSchema>>({
@@ -53,6 +55,7 @@ const CreateListDialog = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formValidationSchema>) {
+    if (!user) return;
     await toast.promise(
       monitofresh
         .refreshAddressData([
@@ -63,7 +66,7 @@ const CreateListDialog = () => {
           ),
         ])
         .then(async () => {
-          await createListAction(values);
+          await createListAction({ ...values, userId: user.id });
         }),
       {
         loading: "Creating list...",
