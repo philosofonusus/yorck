@@ -2,13 +2,16 @@ import ky from "ky";
 
 export const monitofresh = {
   async refreshAddressData(addresses: string[]) {
-    await ky.post(`https://monitofresh.railway.app/refreshAddressListData`, {
-      json: {
-        addresses,
-      },
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    await ky.post(
+      `https://monitofresh-production.up.railway.app/refreshAddressListData`,
+      {
+        json: {
+          addresses,
+        },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   },
 };
