@@ -43,7 +43,7 @@ const PortfolioTab: React.FC = () => {
           }, [])
           .map((el: any, idx: number) => {
             return (
-              <div key={idx} className="flex grow items-center gap-2">
+              <div key={idx} className="flex items-center gap-2">
                 {el.logo_url ? (
                   <Image
                     alt={el.symbol}
