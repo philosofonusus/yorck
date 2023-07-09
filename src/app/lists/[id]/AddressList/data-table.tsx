@@ -43,8 +43,8 @@ export function DataTable<TData, TValue>({
   data,
   list,
 }: DataTableProps<TData, TValue>) {
-  console.log("🚀 ~ file: data-table.tsx:46 ~ data:", data);
   const [listInfo, setListInfo] = useAtom(listInfoAtom);
+
   const [rowSelection, setRowSelection] = React.useState({});
 
   const [columnVisibility, setColumnVisibility] =
@@ -78,11 +78,20 @@ export function DataTable<TData, TValue>({
 
   // sync list info with atom
   React.useEffect(() => {
+    //@ts-ignore
+    if (!table) return;
+    console.log(
+      data.map((el: any) => [
+        el.balances.map((el) => el.amount * el.price).filter((el) => el > 500),
+        JSON.stringify(el.balances),
+      ]),
+      "rows"
+    );
     setListInfo({
       ...list,
       selectedRows: table.getSelectedRowModel().rows.map((el) => el.original),
     });
-  }, [table, rowSelection, setListInfo, list]);
+  }, [table, rowSelection, data, setListInfo, list]);
 
   // sync favorites
   React.useEffect(() => {

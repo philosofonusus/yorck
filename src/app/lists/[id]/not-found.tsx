@@ -1,12 +1,12 @@
 import { ErrorCard } from "@/components/error-card";
 import { Shell } from "@/components/shell";
 
-export default function EmailPreferencesNotFound() {
+export default function ListNotFound() {
   return (
     <Shell variant="centered">
       <ErrorCard
         title="List not found"
-        description="The lists you are looking for does not exist."
+        description="The list you are looking for does not exist."
         retryLink="/lists"
         retryLinkText="Go to all lists"
       />

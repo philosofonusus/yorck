@@ -16,7 +16,7 @@ import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
 import PortfolioTab from "./Tabs/PortfolioTab";
 import { currentUser } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 
 export default async function ListPage({
   params: { id: listId },
@@ -38,24 +38,20 @@ export default async function ListPage({
     .then((res) => res[0]);
 
   if (!list) {
-    return <div>404</div>;
+    return notFound();
   }
-  const data = new Map(
-    Object.entries(
-      Object.assign(
-        {},
-        ...(await Promise.allSettled(
-          (list.addresses as string[]).map(async (address) => {
-            return {
-              [address]: {
-                account: await redis.get(`account:${address}`),
-                history_list: await redis.get(`history_list:${address}`),
-              },
-            };
-          })
-        ).then((res) => res.map((r: any) => r.value)))
-      )
-    )
+  const data = Object.assign(
+    {},
+    ...(await Promise.allSettled(
+      (list.addresses as string[]).map(async (address) => {
+        return {
+          [address]: {
+            account: await redis.get(`account:${address}`),
+            history_list: await redis.get(`history_list:${address}`),
+          },
+        };
+      })
+    ).then((res) => res.map((r: any) => r.value)))
   );
 
   return (
@@ -98,31 +94,32 @@ export default async function ListPage({
           <DataTable
             list={list}
             columns={columns}
-            data={(list.addresses as string[])
-              .map((address) => {
-                const addressData = data.get(address);
-                let winrate = 0;
-                let roi = 0;
+            data={Object.keys(data).map((address) => {
+              const addressData = data[address];
+              let winrate = 0;
+              let roi = 0;
+              //@ts-ignore
+              if (addressData?.history_list) {
                 //@ts-ignore
-                if (addressData?.history_list) {
-                  //@ts-ignore
-                  const _result = statsCalculator(addressData?.history_list);
-                  winrate = _result.winrate;
-                  roi = _result.roi;
-                }
-                return {
-                  address,
-                  isFavorite: (list.favorites as string[]).includes(address),
-                  //@ts-ignore
-                  usd_total: addressData?.account?.usd_total,
-                  //@ts-ignore
-                  history_list: addressData?.history_list,
-                  chains: ["eth"],
-                  winrate,
-                  roi,
-                };
-              })
-              .filter(Boolean)}
+                const _result = statsCalculator(addressData?.history_list);
+                winrate = _result.winrate;
+                roi = _result.roi;
+              }
+
+              return {
+                address,
+                isFavorite: (list.favorites as string[]).includes(address),
+                //@ts-ignore
+                usd_total: addressData?.account?.usd_total,
+                //@ts-ignore
+                history_list: addressData?.history_list,
+                //@ts-ignore
+                balances: addressData?.account?.balances,
+                chains: ["eth"],
+                winrate,
+                roi,
+              };
+            })}
           />
         </CardContent>
       </Card>

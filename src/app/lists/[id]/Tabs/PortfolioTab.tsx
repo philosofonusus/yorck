@@ -1,10 +1,9 @@
 "use client";
 
-import { TabsContent } from "@radix-ui/react-tabs";
+import { TabsContent } from "@/components/ui/tabs";
 import { useAtom } from "jotai";
 import { toast } from "sonner";
 import { listInfoAtom } from "../AddressList/atoms";
-import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { useCopyToClipboard } from "usehooks-ts";
@@ -14,19 +13,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-interface PortfolioTabProps {
-  data: [string, any][];
-}
-const PortfolioTab: React.FC<PortfolioTabProps> = ({ data }) => {
-  const mapData = new Map(data);
-
+const PortfolioTab: React.FC = () => {
   const [listInfo, setListInfo] = useAtom(listInfoAtom);
   const [value, copy] = useCopyToClipboard();
 
@@ -34,7 +27,7 @@ const PortfolioTab: React.FC<PortfolioTabProps> = ({ data }) => {
     <TabsContent value="portfolio">
       <Card className="p-6">
         {listInfo.selectedRows
-          .map((el: any) => mapData.get(el.address)?.account.balances)
+          .map((el: any) => el?.balances)
           .filter(Boolean)
           .flat()
           .filter((el: any) => el.price * el.amount > 500)
