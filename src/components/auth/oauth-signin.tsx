@@ -5,6 +5,7 @@ import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/types";
 import { toast } from "sonner";
 import GithubIcon from "../../public/github_icon.svg";
+import Image from "next/image";
 import GoogleIcon from "../../public/google_icon.svg";
 import AppleIcon from "../../public/apple_icon.svg";
 
@@ -12,20 +13,20 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 const oauthProviders = [
-  { name: "Google", strategy: "oauth_google", Icon: GoogleIcon },
+  { name: "Google", strategy: "oauth_google", icon: GoogleIcon },
   {
     name: "Github",
     strategy: "oauth_github",
-    Icon: GithubIcon,
+    icon: GithubIcon,
   },
   {
     name: "Apple",
     strategy: "oauth_apple",
-    Icon: AppleIcon,
+    icon: AppleIcon,
   },
 ] satisfies {
   name: string;
-  Icon: any;
+  icon: any;
   strategy: OAuthStrategy;
 }[];
 
@@ -70,7 +71,14 @@ export function OAuthSignIn() {
                 aria-hidden="true"
               />
             ) : (
-              <provider.Icon className="mr-2" aria-hidden="true" />
+              <Image
+                src={provider.icon}
+                alt={provider.strategy}
+                width={16}
+                height={16}
+                className="mr-2"
+                aria-hidden="true"
+              />
             )}
             {provider.name}
           </Button>
