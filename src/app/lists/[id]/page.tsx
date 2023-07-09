@@ -15,6 +15,7 @@ import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
 import PortfolioTab from "./Tabs/PortfolioTab";
+import TxListTab from './Tabs/TxListTab'
 import { currentUser } from "@clerk/nextjs";
 import { redirect, notFound } from "next/navigation";
 
@@ -85,9 +86,7 @@ export default async function ListPage({
             <StatsTab />
             {/*@ts-ignore*/}
             <PortfolioTab data={data} />
-            <TabsContent value="transactions">
-              <Card></Card>
-            </TabsContent>
+            <TxListTab />
           </Tabs>
         </CardHeader>
         <CardContent>
