@@ -26,22 +26,24 @@ const PortfolioTab: React.FC = () => {
 
   const totalPortfolio = useMemo(
     () =>
-      listInfo.selectedRows
-        .map((el: any) => el?.balances)
-        .filter(Boolean)
-        .flat()
-        .filter((el: any) => el.price * el.amount > 500)
-        .sort((a: any, b: any) => b.price * b.amount - a.price * a.amount)
-        .reduce(function (accumulator: any, cur: any) {
-          const id = cur.id,
-            found = accumulator.find(function (el: any) {
-              return el.id == id;
-            });
-          if (found) found.amount += cur.amount;
-          else accumulator.push(cur);
-          return accumulator;
-        }, []),
-    [listInfo.selectedRows]
+      listInfo?.selectedRows
+        ? listInfo.selectedRows
+            .map((el: any) => el?.balances)
+            .filter(Boolean)
+            .flat()
+            .filter((el: any) => el.price * el.amount > 500)
+            .sort((a: any, b: any) => b.price * b.amount - a.price * a.amount)
+            .reduce(function (accumulator: any, cur: any) {
+              const id = cur.id,
+                found = accumulator.find(function (el: any) {
+                  return el.id == id;
+                });
+              if (found) found.amount += cur.amount;
+              else accumulator.push(cur);
+              return accumulator;
+            }, [])
+        : [],
+    [listInfo?.selectedRows]
   );
 
   return listInfo?.selectedRows?.length ? (
