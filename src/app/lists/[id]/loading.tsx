@@ -1,10 +1,9 @@
-import { Shell } from "@/components/shell";
 import { Loader2 } from "lucide-react";
 
 export default function Loading() {
   return (
-    <Shell variant="centered" className="h-full">
+    <div className="flex items-center h-full justify-center w-full">
       <Loader2 className="h-12 w-12 animate-spin" />
-    </Shell>
+    </div>
   );
 }
