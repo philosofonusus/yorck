@@ -53,7 +53,7 @@ const PortfolioTab: React.FC = () => {
         {totalPortfolio.map((el: any, idx: number) => {
           return (
             <div key={idx} className="flex items-center gap-2">
-              <Avatar className="h-10 w-10">
+              <Avatar className="h-10 w-10 bg-white">
                 <AvatarImage src={el.logo_url} alt={el.symbol} />
                 <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
               </Avatar>
