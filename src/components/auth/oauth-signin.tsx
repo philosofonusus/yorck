@@ -72,6 +72,7 @@ export function OAuthSignIn() {
               />
             ) : (
               <Image
+                quality={100}
                 src={provider.icon}
                 alt={provider.strategy}
                 width={16}
