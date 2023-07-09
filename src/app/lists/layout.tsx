@@ -10,7 +10,7 @@ export default function ListsLayout({
     <div className="h-full">
       <Header />
 
-      <main className="h-[calc(100% - 57px)] overflow-y-scroll">
+      <main className="h-[calc(100% - 57px)] mt-[57px] overflow-y-scroll">
         {children}
       </main>
     </div>
