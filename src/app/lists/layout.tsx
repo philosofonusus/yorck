@@ -9,7 +9,8 @@ export default function ListsLayout({
   return (
     <div className="h-full">
       <Header />
-      {children}
+
+      <main className="h-[calc(100% - 57px)]">{children}</main>
     </div>
   );
 }
