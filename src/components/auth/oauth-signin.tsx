@@ -4,22 +4,28 @@ import * as React from "react";
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/types";
 import { toast } from "sonner";
+import GithubIcon from "@/public/github_icon.svg";
+import GoogleIcon from "@/public/google_icon.svg";
+import AppleIcon from "@/public/apple_icon.svg";
 
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 const oauthProviders = [
-  { name: "Google", strategy: "oauth_google" },
+  { name: "Google", strategy: "oauth_google", Icon: GoogleIcon },
   {
     name: "Github",
     strategy: "oauth_github",
+    Icon: GithubIcon,
   },
   {
     name: "Apple",
     strategy: "oauth_apple",
+    Icon: AppleIcon,
   },
 ] satisfies {
   name: string;
+  Icon: any;
   strategy: OAuthStrategy;
 }[];
 
@@ -64,7 +70,7 @@ export function OAuthSignIn() {
                 aria-hidden="true"
               />
             ) : (
-              <div className="mr-2 h-4 w-4" aria-hidden="true" />
+              <provider.Icon className="mr-2" aria-hidden="true" />
             )}
             {provider.name}
           </Button>
