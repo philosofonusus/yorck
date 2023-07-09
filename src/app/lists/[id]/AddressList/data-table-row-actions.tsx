@@ -66,7 +66,6 @@ export function DataTableRowActions<TData>({
           <Star className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
           Toggle favorite
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => {
             listInfo &&
@@ -89,6 +88,8 @@ export function DataTableRowActions<TData>({
           Force sync
           <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
+
         <DropdownMenuItem
           onSelect={() => {
             listInfo &&
