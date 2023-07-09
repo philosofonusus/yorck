@@ -25,7 +25,7 @@ const PortfolioTab: React.FC = () => {
 
   return listInfo?.selectedRows?.length ? (
     <TabsContent value="portfolio">
-      <Card className="p-6">
+      <Card className="p-6 flex flex-wrap gap-4">
         {listInfo.selectedRows
           .map((el: any) => el?.balances)
           .filter(Boolean)
