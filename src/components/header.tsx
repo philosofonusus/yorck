@@ -12,13 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 import { DropdownMenuShortcut } from "./ui/dropdown-menu";
 
 export default function Header() {
   const { user } = useUser();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
       <div className="container py-3 flex items-center justify-between">
@@ -65,11 +63,7 @@ export default function Header() {
             <DropdownMenuSeparator />
             <SignOutButton
               signOutCallback={() =>
-                startTransition(() => {
-                  router.push(
-                    `${window.location.origin}/signin/?redirect=false`
-                  );
-                })
+                router.push(`${window.location.origin}/signin/?redirect=false`)
               }
             >
               <DropdownMenuItem>
