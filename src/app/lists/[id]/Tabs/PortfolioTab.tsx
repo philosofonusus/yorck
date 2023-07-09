@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMemo } from "react";
+import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -52,17 +53,10 @@ const PortfolioTab: React.FC = () => {
         {totalPortfolio.map((el: any, idx: number) => {
           return (
             <div key={idx} className="flex items-center gap-2">
-              {el.logo_url ? (
-                <Image
-                  alt={el.symbol}
-                  src={el.logo_url}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full"
-                />
-              ) : (
-                <div className="h-10 w-10 rounded-full bg-accent" />
-              )}
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={el.logo_url} alt={el.logo_symbol} />
+                <AvatarFallback>{el.logo_symbol.toUpperCase()}</AvatarFallback>
+              </Avatar>
               <div className="flex flex-col gap-1">
                 <TooltipProvider>
                   <Tooltip>
