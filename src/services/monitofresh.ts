@@ -2,7 +2,7 @@ import ky from "ky";
 
 export const monitofresh = {
   async refreshAddressData(addresses: string[]) {
-    await ky.post(`http://localhost:8080/refreshAddressListData`, {
+    await ky.post(`https://monitofresh.railway.app/refreshAddressListData`, {
       json: {
         addresses,
       },
