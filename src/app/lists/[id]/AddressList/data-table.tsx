@@ -80,13 +80,7 @@ export function DataTable<TData, TValue>({
   React.useEffect(() => {
     //@ts-ignore
     if (!table) return;
-    // console.log(
-    //   data.map((el: any) => [
-    //     el.balances.map((el) => el.amount * el.price).filter((el) => el > 500),
-    //     JSON.stringify(el.balances),
-    //   ]),
-    //   "rows"
-    // );
+
     setListInfo({
       ...list,
       selectedRows: table.getSelectedRowModel().rows.map((el) => el.original),

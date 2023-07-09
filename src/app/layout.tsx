@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning> 
         <body>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
