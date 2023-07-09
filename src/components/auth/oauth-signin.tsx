@@ -4,9 +4,9 @@ import * as React from "react";
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
 import { type OAuthStrategy } from "@clerk/types";
 import { toast } from "sonner";
-import GithubIcon from "@/../public/apple_icon.svg";
+import GithubIcon from "@/../public/github_icon.svg";
 import Image from "next/image";
-import GoogleIcon from "@/../public/apple_icon.svg";
+import GoogleIcon from "@/../public/google_icon.svg";
 import AppleIcon from "@/../public/apple_icon.svg";
 
 import { Button } from "@/components/ui/button";
