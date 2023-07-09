@@ -67,6 +67,10 @@ const CreateListDialog = () => {
         ])
         .then(async () => {
           await createListAction({ ...values, userId: user.id });
+        })
+        .then(() => {
+          router.refresh();
+          setIsCreateListOpen(false);
         }),
       {
         loading: "Creating list...",
@@ -74,8 +78,6 @@ const CreateListDialog = () => {
         error: "Something went wrong",
       }
     );
-    router.refresh();
-    setIsCreateListOpen(false);
   }
   return (
     <Dialog open={isCreateListOpen} onOpenChange={setIsCreateListOpen}>

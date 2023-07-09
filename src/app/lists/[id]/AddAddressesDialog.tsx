@@ -47,7 +47,7 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
 
   async function onSubmit(values: z.infer<typeof formValidationSchema>) {
     setIsCreateListOpen(false);
-    await toast.promise(
+    toast.promise(
       monitofresh
         .refreshAddressData([
           ...new Set(
@@ -61,14 +61,14 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
             listId,
             addresses: values.addresses,
           });
-        }),
+        })
+        .then(() => router.refresh()),
       {
         loading: "Adding addresses...",
         success: "Addresses added succesfully!",
         error: "Something went wrong.",
       }
     );
-    router.refresh();
   }
   return (
     <Dialog open={isCreateListOpen} onOpenChange={setIsCreateListOpen}>

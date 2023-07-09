@@ -25,12 +25,16 @@ const AnimatedAddressList: React.FC<AnimatedListProps> = ({ lists }) => {
           key={list.id}
           listId={list.id}
           onListDelete={async () => {
-            await toast.promise(deleteListAction({ listId: list.id }), {
-              loading: "Deleting list...",
-              success: "List deleted!",
-              error: "Something went wrong.",
-            });
-            router.refresh();
+            toast.promise(
+              deleteListAction({ listId: list.id }).then(() =>
+                router.refresh()
+              ),
+              {
+                loading: "Deleting list...",
+                success: "List deleted!",
+                error: "Something went wrong.",
+              }
+            );
           }}
           listName={list.name}
           listCount={(list.addresses as string[]).length}

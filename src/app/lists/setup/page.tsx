@@ -65,6 +65,10 @@ export default function Home() {
         ])
         .then(async () => {
           await createListAction({ ...values, userId: user!.id });
+        })
+        .then(() => {
+          router.refresh();
+          router.push("/lists");
         }),
       {
         loading: "Creating list...",
@@ -72,8 +76,6 @@ export default function Home() {
         error: "Something went wrong",
       }
     );
-    router.refresh();
-    router.push("/lists");
   }
 
   return (
