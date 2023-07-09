@@ -7,9 +7,9 @@ export default function ListsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="h-full">
       <Header />
       {children}
-    </>
+    </div>
   );
 }
