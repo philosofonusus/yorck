@@ -12,7 +12,7 @@ export default function ListsLayout({
 
       <main
         style={{ height: "calc(100% - 57px)" }}
-        className="mt-[57px] overflow-y-scroll"
+        className="overflow-y-scroll"
       >
         {children}
       </main>
