@@ -54,8 +54,8 @@ const PortfolioTab: React.FC = () => {
           return (
             <div key={idx} className="flex items-center gap-2">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={el.logo_url} alt={el.logo_symbol} />
-                <AvatarFallback>{el.logo_symbol.toUpperCase()}</AvatarFallback>
+                <AvatarImage src={el.logo_url} alt={el.symbol} />
+                <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1">
                 <TooltipProvider>
