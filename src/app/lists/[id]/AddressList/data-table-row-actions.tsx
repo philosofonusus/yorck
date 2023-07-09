@@ -1,7 +1,7 @@
 "use client";
 
 import { Row } from "@tanstack/react-table";
-import { MoreHorizontal, Star, Trash } from "lucide-react";
+import { MoreHorizontal, RefreshCw, Star, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { listInfoAtom } from "./atoms";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import { monitofresh } from "@/services/monitofresh";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -66,7 +67,28 @@ export function DataTableRowActions<TData>({
           Toggle favorite
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-
+        <DropdownMenuItem
+          onSelect={() => {
+            listInfo &&
+              toast.promise(
+                monitofresh
+                  .refreshAddressData([
+                    //@ts-ignore
+                    rowData.address,
+                  ])
+                  .then(() => router.refresh()),
+                {
+                  loading: "Syncing address data...",
+                  success: "Address data synced!",
+                  error: "Failed to sync address data",
+                }
+              );
+          }}
+        >
+          <RefreshCw className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+          Force sync
+          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={() => {
             listInfo &&
