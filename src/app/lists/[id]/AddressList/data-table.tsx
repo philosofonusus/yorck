@@ -80,11 +80,17 @@ export function DataTable<TData, TValue>({
   React.useEffect(() => {
     //@ts-ignore
     if (!table) return;
-
-    setListInfo({
-      ...list,
-      selectedRows: table.getSelectedRowModel().rows.map((el) => el.original),
-    });
+    setListInfo(null);
+    setTimeout(
+      () =>
+        setListInfo({
+          ...list,
+          selectedRows: table
+            .getSelectedRowModel()
+            .rows.map((el) => el.original),
+        }),
+      0
+    );
   }, [table, rowSelection, data, setListInfo, list]);
 
   // sync favorites
