@@ -2,10 +2,9 @@
 
 import { renameListAction } from "@/app/_actions/list";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useDebounce } from "usehooks-ts";
-
 
 interface ListNameInputProps {
   initialListName: string;

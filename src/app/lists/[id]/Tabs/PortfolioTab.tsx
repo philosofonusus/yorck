@@ -4,7 +4,6 @@ import { TabsContent } from "@/components/ui/tabs";
 import { useAtom } from "jotai";
 import { toast } from "sonner";
 import { listInfoAtom } from "../AddressList/atoms";
-import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { useCopyToClipboard } from "usehooks-ts";
 import {

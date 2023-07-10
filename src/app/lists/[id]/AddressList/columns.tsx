@@ -1,13 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Star } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { Toggle } from "@/components/ui/toggle";
-import router from "next/navigation";
-import { toggleListFavoriteAction } from "@/app/_actions/list";
 import DataTableFavoriteStar from "./data-table-favorite-star";
 
 export type MonitoredAddress = {

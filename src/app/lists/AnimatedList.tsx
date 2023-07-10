@@ -4,9 +4,9 @@ import { addressLists } from "../../lib/db/schema";
 import ListEntry from "./ListEntry";
 import { toast } from "sonner";
 import { deleteListAction } from "../_actions/list";
-import { useEffect, useRef } from "react";
-import autoAnimate from "@formkit/auto-animate";
 import { useRouter } from "next/navigation";
+import autoAnimate from "@formkit/auto-animate";
+import { useRef, useEffect } from "react";
 
 interface AnimatedListProps {
   lists: InferModel<typeof addressLists>[];

@@ -91,7 +91,7 @@ export function DataTable<TData, TValue>({
         }),
       0
     );
-  }, [table, rowSelection, data, setListInfo, list]);
+  }, [table, rowSelection, setListInfo, list]);
 
   // sync favorites
   React.useEffect(() => {

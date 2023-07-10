@@ -6,16 +6,15 @@ import { eq, and } from "drizzle-orm";
 import { ChevronLeft, CogIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
 import { ListNameInput } from "./ListNameInput";
-import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "./AddressList/data-table";
 import { columns } from "./AddressList/columns";
 import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
 import PortfolioTab from "./Tabs/PortfolioTab";
-import TxListTab from './Tabs/TxListTab'
+import TxListTab from "./Tabs/TxListTab";
 import { currentUser } from "@clerk/nextjs";
 import { redirect, notFound } from "next/navigation";
 
@@ -84,8 +83,7 @@ export default async function ListPage({
               </div>
             </CardTitle>
             <StatsTab />
-            {/*@ts-ignore*/}
-            <PortfolioTab data={data} />
+            <PortfolioTab />
             <TxListTab />
           </Tabs>
         </CardHeader>
