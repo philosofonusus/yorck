@@ -80,6 +80,6 @@
 html,
 body,
 #__next {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   height: 100%;
 }
