@@ -53,16 +53,6 @@ export default async function ListPage({
       })
     ).then((res) => res.map((r: any) => r.value)))
   );
-  const balancesData = Object.keys(data).map((el) => {
-    const addressData = data[el];
-    addressData.account.balances
-      .map((el: any) => ({
-        usd_value: el.price * el.amount,
-        optimized_symbol: el.optimzed_symbol,
-      }))
-      .filter((el: any) => el.usd_value > 500);
-  });
-
   return (
     <div className="flex w-full items-center justify-center overflow-y-scroll py-6">
       <Card className="mx-6 w-full">
@@ -104,9 +94,7 @@ export default async function ListPage({
               const addressData = data[address];
               let winrate = 0;
               let roi = 0;
-              //@ts-ignore
               if (addressData?.history_list) {
-                //@ts-ignore
                 const _result = statsCalculator(addressData?.history_list);
                 winrate = _result.winrate;
                 roi = _result.roi;
@@ -115,11 +103,8 @@ export default async function ListPage({
               return {
                 address,
                 isFavorite: (list.favorites as string[]).includes(address),
-                //@ts-ignore
                 usd_total: addressData?.account?.usd_total,
-                //@ts-ignore
                 history_list: JSON.stringify(addressData?.history_list),
-                //@ts-ignore
                 balances: JSON.stringify(addressData?.account?.balances),
                 chains: ["eth"],
                 winrate,

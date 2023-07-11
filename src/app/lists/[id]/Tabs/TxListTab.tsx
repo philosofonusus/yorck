@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { listInfoAtom } from "../AddressList/atoms";
 
 export default function TxListTab() {
-  const [listInfo, setListInfo] = useAtom(listInfoAtom);
+  const [listInfo] = useAtom(listInfoAtom);
 
   return listInfo?.selectedRows?.length ? (
     <TabsContent value="transaction">

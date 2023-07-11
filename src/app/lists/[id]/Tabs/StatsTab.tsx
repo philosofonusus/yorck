@@ -10,7 +10,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 export default function StatsTab() {
-  const [listInfo, setListInfo] = useAtom(listInfoAtom);
+  const [listInfo] = useAtom(listInfoAtom);
 
   return listInfo?.selectedRows?.length ? (
     <TabsContent value="stats">
