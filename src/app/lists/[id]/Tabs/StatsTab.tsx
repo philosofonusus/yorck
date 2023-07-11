@@ -4,6 +4,7 @@ import { listInfoAtom } from "../AddressList/atoms";
 import { TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import NetCurveChart from "@/components/net-curve-chart";
+import { UTCTimestamp } from "lightweight-charts";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -24,16 +25,10 @@ export default function StatsTab() {
                 JSON.parse(el.net_curve) as {
                   [key: string]: number;
                 }
-              )
-                .map(([date, value]: [string, number], idx) =>
-                  idx % 12 === 0
-                    ? {
-                        primary: new Date(+date * 1000),
-                        secondary: value,
-                      }
-                    : null
-                )
-                .filter(Boolean),
+              ).map(([date, value]: [string, number], idx) => ({
+                time: +date as UTCTimestamp,
+                value,
+              })),
             }))}
           />
           <div className="flex items-center gap-1.5">
