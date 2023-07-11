@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { listInfoAtom } from "../AddressList/atoms";
 import { TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
+import NetCurveChart from "@/components/net-curve-chart";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -16,6 +17,25 @@ export default function StatsTab() {
     <TabsContent value="stats">
       <Card className="p-6">
         <div className="flex flex-col gap-2">
+          <NetCurveChart
+            charts={listInfo.selectedRows.map((el: any) => ({
+              label: el.address,
+              data: Object.entries(
+                JSON.parse(el.net_curve) as {
+                  [key: string]: number;
+                }
+              )
+                .map(([date, value]: [string, number], idx) =>
+                  idx % 12 === 0
+                    ? {
+                        primary: new Date(+date * 1000),
+                        secondary: value,
+                      }
+                    : null
+                )
+                .filter(Boolean),
+            }))}
+          />
           <div className="flex items-center gap-1.5">
             <span className="font-semibold">total USD:</span>
             <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">

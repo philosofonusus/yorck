@@ -102,6 +102,7 @@ export default async function ListPage({
 
               return {
                 address,
+                net_curve: JSON.stringify(addressData?.account?.net_curve),
                 isFavorite: (list.favorites as string[]).includes(address),
                 usd_total: addressData?.account?.usd_total,
                 history_list: JSON.stringify(addressData?.history_list),
