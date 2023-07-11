@@ -78,19 +78,12 @@ export function DataTable<TData, TValue>({
 
   // sync list info with atom
   React.useEffect(() => {
-    //@ts-ignore
     if (!table) return;
-    setListInfo(null);
-    setTimeout(
-      () =>
-        setListInfo({
-          ...list,
-          selectedRows: table
-            .getSelectedRowModel()
-            .rows.map((el) => el.original),
-        }),
-      0
-    );
+
+    setListInfo({
+      ...list,
+      selectedRows: table.getSelectedRowModel().rows.map((el) => el.original),
+    });
   }, [table, rowSelection, setListInfo, list]);
 
   // sync favorites
