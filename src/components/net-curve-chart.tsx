@@ -1,6 +1,5 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { createChart, ColorType, UTCTimestamp } from "lightweight-charts";
-import { Card } from "./ui/card";
 
 interface NetCurveChartProps {
   charts: {
@@ -42,7 +41,7 @@ const randomColor = (() => {
 const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     if (!chartRef.current) return;
     const chart = createChart(chartRef.current!, {
       width: chartRef.current!.offsetWidth,
