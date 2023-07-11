@@ -8,14 +8,14 @@ import DataTableFavoriteStar from "./data-table-favorite-star";
 export type MonitoredAddress = {
   usd_total: string;
   address: string;
-  balances: any[];
+  balances: string;
   //   dex_roi: {
   //     uniswap: string;
   //     total: string;
   //   };
   isFavorite: boolean;
   winrate: number;
-  history_list: any[];
+  history_list: string;
   roi: number;
   chains: string[];
 };

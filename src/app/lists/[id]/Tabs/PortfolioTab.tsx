@@ -28,8 +28,7 @@ const PortfolioTab: React.FC = () => {
     () =>
       listInfo?.selectedRows
         ? listInfo.selectedRows
-            .map((el: any) => el?.balances)
-            .filter(Boolean)
+            .map((el: any) => JSON.parse(el.balances))
             .flat()
             .filter((el: any) => el.price * el.amount > 500)
             .sort((a: any, b: any) => b.price * b.amount - a.price * a.amount)
@@ -46,10 +45,10 @@ const PortfolioTab: React.FC = () => {
     [listInfo?.selectedRows]
   );
 
-  return listInfo?.selectedRows?.length ? (
+  return totalPortfolio.length ? (
     <TabsContent value="portfolio">
       <Card className="p-6 flex flex-wrap gap-4">
-        {totalPortfolio.map((el: any, idx: number) => {
+        {totalPortfolio?.map((el: any, idx: number) => {
           return (
             <div key={idx} className="flex items-center gap-2">
               <Avatar className="h-10 w-10 bg-white">
