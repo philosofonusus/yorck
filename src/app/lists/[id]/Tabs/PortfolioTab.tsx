@@ -26,7 +26,7 @@ const PortfolioTab: React.FC = () => {
 
   const totalPortfolio = useMemo(
     () =>
-      listInfo?.selectedRows
+      listInfo.selectedRows.length
         ? listInfo.selectedRows
             .map((el: any) => JSON.parse(el.balances))
             .flat()
@@ -48,7 +48,7 @@ const PortfolioTab: React.FC = () => {
   return totalPortfolio.length ? (
     <TabsContent value="portfolio">
       <Card className="p-6 flex flex-wrap gap-4">
-        {totalPortfolio?.map((el: any, idx: number) => {
+        {totalPortfolio.map((el: any, idx: number) => {
           return (
             <div key={idx} className="flex items-center gap-2">
               <Avatar className="h-10 w-10 bg-white">

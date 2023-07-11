@@ -12,7 +12,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 export default function StatsTab() {
   const [listInfo] = useAtom(listInfoAtom);
 
-  return listInfo?.selectedRows?.length ? (
+  return listInfo.selectedRows.length ? (
     <TabsContent value="stats">
       <Card className="p-6">
         <div className="flex flex-col gap-2">

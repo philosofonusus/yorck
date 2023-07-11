@@ -7,7 +7,7 @@ import { listInfoAtom } from "../AddressList/atoms";
 export default function TxListTab() {
   const [listInfo] = useAtom(listInfoAtom);
 
-  return listInfo?.selectedRows?.length ? (
+  return listInfo.selectedRows.length ? (
     <TabsContent value="transaction">
       <Card className="p-6"></Card>
     </TabsContent>
