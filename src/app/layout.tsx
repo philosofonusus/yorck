@@ -16,6 +16,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <script
+            defer
+            data-domain="yorck.vercel.app"
+            src="https://plausible.io/js/script.js"
+          ></script>
+        </head>
         <body>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             {children}
