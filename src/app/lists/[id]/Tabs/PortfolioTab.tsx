@@ -56,20 +56,22 @@ const PortfolioTab: React.FC = () => {
                 <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1">
-                <TooltipProvider>
+                <TooltipProvider delayDuration={300}>
                   <Tooltip>
                     <TooltipTrigger className="text-left">
-                      <span
-                        onClick={() => {
-                          copy(el.id);
-                          toast.success("Copied to clipboard");
-                        }}
-                        className="cursor-pointer text-sm font-semibold text-muted-foreground"
-                      >
+                      <span className="cursor-pointer text-sm font-semibold text-muted-foreground">
                         {el.optimized_symbol} ({el.chain})
                       </span>
                     </TooltipTrigger>
-                    <TooltipContent>{el.id}</TooltipContent>
+                    <TooltipContent
+                      className="cursor-pointer"
+                      onClick={() => {
+                        copy(el.id);
+                        toast.success("Copied to clipboard");
+                      }}
+                    >
+                      {el.id}
+                    </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
 

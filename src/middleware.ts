@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { clerkClient } from "@clerk/nextjs";
 import { authMiddleware } from "@clerk/nextjs/server";
+import { UserRole } from "./types/user";
 
 export default authMiddleware({
   // Public routes are routes that don't require authentication
@@ -26,21 +27,20 @@ export default authMiddleware({
       return NextResponse.redirect(url);
     }
 
-    // Set the user's role to user if it doesn't exist
-    // const user = await clerkClient.users.getUser(auth.userId);
+    const user = await clerkClient.users.getUser(auth.userId);
 
-    // if (!user) {
-    //   throw new Error("User not found.");
-    // }
+    if (!user) {
+      throw new Error("User not found.");
+    }
 
-    // // If the user doesn't have a role, set it to user
-    // if (!user.privateMetadata.role) {
-    //   await clerkClient.users.updateUserMetadata(auth.userId, {
-    //     privateMetadata: {
-    //       role: "user" satisfies UserRole,
-    //     },
-    //   });
-    // }
+    // If the user doesn't have a role, set it to user
+    if (!user.privateMetadata.role) {
+      await clerkClient.users.updateUserMetadata(auth.userId, {
+        privateMetadata: {
+          role: UserRole.GUEST,
+        },
+      });
+    }
   },
 });
 
