@@ -25,7 +25,9 @@ export const statsCalculator = (history_list: any[]) => {
           item.project_id.startsWith("sushi") ||
           item.project_id.startsWith("curve") ||
           item.project_id.startsWith("paraswap") ||
-          item.project_id.startsWith("airswap")) &&
+          item.project_id.startsWith("airswap") ||
+          item.project_id.startsWith("slingshot") ||
+          item.project_id.startsWith("0x")) &&
         item.sends.length &&
         item.receives.length
     )
