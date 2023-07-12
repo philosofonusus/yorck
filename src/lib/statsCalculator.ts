@@ -19,7 +19,13 @@ export const statsCalculator = (history_list: any[]) => {
     .filter(
       (item: any) =>
         item.project_id &&
-        item.project_id.startsWith("uniswap") &&
+        (item.project_id.startsWith("uniswap") ||
+          item.project_id.startsWith("1inch") ||
+          item.project_id.toLowerCase().startsWith("dydx") ||
+          item.project_id.startsWith("sushi") ||
+          item.project_id.startsWith("curve") ||
+          item.project_id.startsWith("paraswap") ||
+          item.project_id.startsWith("airswap")) &&
         item.sends.length &&
         item.receives.length
     )
