@@ -7,7 +7,7 @@ export default function ListsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full">
+    <div className="h-full overflow-y-hidden">
       <Header />
 
       <main
