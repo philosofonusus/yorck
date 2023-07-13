@@ -1,4 +1,5 @@
 import React from "react";
+import { block } from "million/react";
 import { createChart, ColorType, UTCTimestamp } from "lightweight-charts";
 
 interface NetCurveChartProps {
@@ -46,7 +47,6 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
     const chart = createChart(chartRef.current!, {
       width: chartRef.current!.offsetWidth,
       height: chartRef.current!.offsetHeight,
-      // dark mode chart
       layout: {
         background: {
           type: ColorType.Solid,

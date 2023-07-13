@@ -19,7 +19,7 @@ const AnimatedAddressList: React.FC<AnimatedListProps> = ({ lists }) => {
     animatedList.current && autoAnimate(animatedList.current);
   }, [animatedList]);
   return (
-    <div ref={animatedList} className="space-y-4">
+    <div ref={animatedList} className="flex flex-col gap-4 space-y-4">
       {lists.map((list) => (
         <ListEntry
           key={list.id}
@@ -46,5 +46,4 @@ const AnimatedAddressList: React.FC<AnimatedListProps> = ({ lists }) => {
     </div>
   );
 };
-
 export default AnimatedAddressList;
