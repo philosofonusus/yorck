@@ -7,15 +7,10 @@ export default function ListsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full overflow-y-hidden">
+    <>
       <Header />
 
-      <main
-        style={{ height: "calc(100% - 57px)" }}
-        className="overflow-y-scroll"
-      >
-        {children}
-      </main>
-    </div>
+      <main className="h-full">{children}</main>
+    </>
   );
 }
