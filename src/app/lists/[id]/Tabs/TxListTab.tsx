@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { useAtom } from "jotai";
 import { listInfoAtom } from "../AddressList/atoms";
-import { For, block } from "million/react";
 import { useMemo } from "react";
 import Image from "next/image";
 import {
@@ -38,7 +37,7 @@ const TxEntry = ({
 }) => {
   const [_, copy] = useCopyToClipboard();
   return (
-    <div className="flex w-full items-center justify-between border-b border-b-accent py-5 last-of-type:border-none">
+    <div className="flex items-center justify-between w-full py-5 border-b border-b-accent last-of-type:border-none">
       <div className="flex flex-col gap-1">
         <span className="text-sm font-semibold">
           {new Date(+((tx.time_at as string) + "000")).toLocaleString("en-GB")}
@@ -53,7 +52,7 @@ const TxEntry = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <span className="cursor-pointer font-semibold">
+                <span className="font-semibold cursor-pointer">
                   {tx.id.slice(0, 6) + "..." + tx.id.slice(-4)}
                 </span>
               </TooltipTrigger>
@@ -85,12 +84,12 @@ const TxEntry = ({
                     height={16}
                   />
                 ) : (
-                  <div className="h-4 w-4 rounded-full bg-accent" />
+                  <div className="w-4 h-4 rounded-full bg-accent" />
                 )}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger className="text-left">
-                      <span className="cursor-pointer font-semibold">
+                      <span className="font-semibold cursor-pointer">
                         {dictionary[tx.token_id]?.optimized_symbol}
                       </span>
                     </TooltipTrigger>
@@ -125,12 +124,12 @@ const TxEntry = ({
                     height={16}
                   />
                 ) : (
-                  <div className="h-4 w-4 rounded-full bg-accent" />
+                  <div className="w-4 h-4 rounded-full bg-accent" />
                 )}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger className="text-left">
-                      <span className="cursor-pointer font-semibold">
+                      <span className="font-semibold cursor-pointer">
                         {dictionary[ely.token_id].optimized_symbol}
                       </span>
                     </TooltipTrigger>
@@ -158,7 +157,7 @@ const TxEntry = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <span className="cursor-pointer font-semibold">
+                <span className="font-semibold cursor-pointer">
                   {tx.owner_address.slice(0, 6) +
                     "..." +
                     tx.owner_address.slice(-4)}
@@ -181,7 +180,7 @@ const TxEntry = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <span className="cursor-pointer font-semibold">
+                <span className="font-semibold cursor-pointer">
                   {tx.tx?.from_addr.slice(0, 6) +
                     "..." +
                     tx.tx?.from_addr.slice(-4)}
@@ -204,7 +203,7 @@ const TxEntry = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="text-left">
-                <span className="cursor-pointer font-semibold">
+                <span className="font-semibold cursor-pointer">
                   {tx.tx?.to_addr.slice(0, 6) +
                     "..." +
                     tx.tx?.to_addr.slice(-4)}
