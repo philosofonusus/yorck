@@ -23,7 +23,7 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex items-center flex-1 space-x-2">
         <Input
           placeholder="Filter addresses..."
           value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
@@ -41,9 +41,9 @@ export function DataTableToolbar<TData>({
           onPressedChange={(value) =>
             table.getColumn("select")?.setFilterValue(value ? true : undefined)
           }
-          className="h-8 w-8 p-0 flex items-center justify-center"
+          className="flex items-center justify-center w-8 h-8 p-0"
         >
-          <CheckSquare className="h-4 w-4" />
+          <CheckSquare className="w-4 h-4" />
         </Toggle>
 
         {isFiltered && (
@@ -53,7 +53,7 @@ export function DataTableToolbar<TData>({
             className="h-8 px-2 lg:px-3"
           >
             Reset
-            <X className="ml-2 h-4 w-4" />
+            <X className="w-4 h-4 ml-2" />
           </Button>
         )}
       </div>

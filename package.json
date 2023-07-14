@@ -52,7 +52,7 @@
     "million": "^2.4.8",
     "mysql2": "^3.5.0",
     "nanoid": "^4.0.2",
-    "next": "13.4.7",
+    "next": "13.4.10",
     "next-auth": "^4.22.1",
     "next-themes": "^0.2.1",
     "postcss": "8.4.24",

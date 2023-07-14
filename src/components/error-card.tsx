@@ -36,8 +36,8 @@ export function ErrorCard({
   return (
     <Card className={cn("grid place-items-center", className)} {...props}>
       <CardHeader>
-        <div className="grid h-20 w-20 place-items-center rounded-full bg-muted">
-          <Icon className="h-10 w-10" aria-hidden="true" />
+        <div className="grid w-20 h-20 rounded-full place-items-center bg-muted">
+          <Icon className="w-10 h-10" aria-hidden="true" />
         </div>
       </CardHeader>
       <CardContent className="flex min-h-[176px] flex-col items-center justify-center space-y-4 text-center">

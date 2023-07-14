@@ -1,5 +1,4 @@
 import React from "react";
-import { block } from "million/react";
 import { createChart, ColorType, UTCTimestamp } from "lightweight-charts";
 
 interface NetCurveChartProps {

@@ -18,16 +18,16 @@ export default function Header() {
   const { user } = useUser();
   const router = useRouter();
   return (
-    <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
-      <div className="container py-3 flex items-center justify-between">
+    <header className="sticky top-0 z-40 w-full border-b supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur">
+      <div className="container flex items-center justify-between py-3">
         <span className="text-2xl font-semibold leading-none tracking-tight">
           Yorck
         </span>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
+            <Button variant="ghost" className="relative w-8 h-8 rounded-full">
+              <Avatar className="w-8 h-8">
                 <AvatarImage src={user?.imageUrl} alt="yorck" />
                 <AvatarFallback />
               </Avatar>

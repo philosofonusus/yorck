@@ -42,7 +42,7 @@ export default async function SignUpPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="px-2 bg-background text-muted-foreground">
                 Or continue with
               </span>
             </div>
@@ -55,7 +55,7 @@ export default async function SignUpPage() {
             <Link
               aria-label="Sign in"
               href="/signin"
-              className="text-primary underline-offset-4 transition-colors hover:underline"
+              className="transition-colors text-primary underline-offset-4 hover:underline"
             >
               Sign in
             </Link>

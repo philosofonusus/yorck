@@ -69,8 +69,8 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
   return (
     <Dialog open={isCreateListOpen} onOpenChange={setIsCreateListOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="h-8 w-8 rounded-full p-0">
-          <Plus className="h-4 w-4" />
+        <Button variant="outline" className="w-8 h-8 p-0 rounded-full">
+          <Plus className="w-4 h-4" />
         </Button>
       </DialogTrigger>
 
@@ -81,7 +81,7 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="my-3 grid gap-4"
+            className="grid gap-4 my-3"
           >
             <FormField
               control={form.control}

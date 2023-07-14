@@ -45,7 +45,7 @@ export const ListNameInput: React.FC<ListNameInputProps> = ({
       }}
       onChange={(e) => setListName(e.target.value)}
       style={{ width: `${listName.length}ch` }}
-      className="space-x-2 bg-transparent text-2xl font-semibold outline-none first-letter:uppercase"
+      className="space-x-2 text-2xl font-semibold bg-transparent outline-none first-letter:uppercase"
     />
   );
 };

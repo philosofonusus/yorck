@@ -42,7 +42,7 @@ export default async function SignInPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="px-2 bg-background text-muted-foreground">
                 Or continue with
               </span>
             </div>
@@ -51,13 +51,13 @@ export default async function SignInPage() {
         </CardContent>
         <CardFooter className="flex flex-wrap items-center justify-between gap-2">
           <div className="text-sm text-muted-foreground">
-            <span className="mr-1 hidden sm:inline-block">
+            <span className="hidden mr-1 sm:inline-block">
               Don&apos;t have an account?
             </span>
             <Link
               aria-label="Sign up"
               href="/signup"
-              className="text-primary underline-offset-4 transition-colors hover:underline"
+              className="transition-colors text-primary underline-offset-4 hover:underline"
             >
               Sign up
             </Link>
@@ -65,7 +65,7 @@ export default async function SignInPage() {
           <Link
             aria-label="Reset password"
             href="/signin/reset-password"
-            className="text-sm text-primary underline-offset-4 transition-colors hover:underline"
+            className="text-sm transition-colors text-primary underline-offset-4 hover:underline"
           >
             Reset password
           </Link>

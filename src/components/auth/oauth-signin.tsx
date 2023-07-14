@@ -67,7 +67,7 @@ export function OAuthSignIn() {
           >
             {isLoading === provider.strategy ? (
               <Loader2
-                className="mr-2 h-4 w-4 animate-spin"
+                className="w-4 h-4 mr-2 animate-spin"
                 aria-hidden="true"
               />
             ) : (

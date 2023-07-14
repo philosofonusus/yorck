@@ -26,7 +26,7 @@ const DataTableFavoriteStar = ({ address }: { address: string }) => {
         );
       }}
       size={20}
-      className="stroke-none cursor-pointer fill-yellow-400"
+      className="cursor-pointer stroke-none fill-yellow-400"
     />
   );
 };
