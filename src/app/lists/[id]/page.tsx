@@ -10,13 +10,26 @@ import { ListNameInput } from "./ListNameInput";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "./AddressList/data-table";
 import { columns } from "./AddressList/columns";
-import StatsTab from "./Tabs/StatsTab";
+// import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
-import PortfolioTab from "./Tabs/PortfolioTab";
-import TxListTab from "./Tabs/TxListTab";
+// import PortfolioTab from "./Tabs/PortfolioTab";
+// import TxListTab from "./Tabs/TxListTab";
+import dynamic from "next/dynamic";
 import { currentUser } from "@clerk/nextjs";
 import { redirect, notFound } from "next/navigation";
+
+const PortfolioTab = dynamic(() => import("./Tabs/PortfolioTab"), {
+  ssr: true,
+});
+
+const StatsTab = dynamic(() => import("./Tabs/StatsTab"), {
+  ssr: true,
+});
+
+const TxListTab = dynamic(() => import("./Tabs/TxListTab"), {
+  ssr: true,
+});
 
 export default async function ListPage({
   params: { id: listId },
@@ -54,8 +67,8 @@ export default async function ListPage({
     ).then((res) => res.map((r: any) => r.value)))
   );
   return (
-    <div className="flex w-full items-center justify-center overflow-y-scroll py-6">
-      <Card className="mx-6 w-full">
+    <div className="flex items-center justify-center w-full py-6 overflow-y-scroll">
+      <Card className="w-full mx-6">
         <CardHeader>
           <Tabs defaultValue="stats">
             <CardTitle className="flex items-center justify-between">
@@ -75,9 +88,9 @@ export default async function ListPage({
 
                 <Button
                   variant="secondary"
-                  className="h-8 w-8 rounded-full p-0"
+                  className="w-8 h-8 p-0 rounded-full"
                 >
-                  <CogIcon className="h-4 w-4" />
+                  <CogIcon className="w-4 h-4" />
                 </Button>
               </div>
             </CardTitle>
