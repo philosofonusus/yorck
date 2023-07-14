@@ -10,26 +10,13 @@ import { ListNameInput } from "./ListNameInput";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "./AddressList/data-table";
 import { columns } from "./AddressList/columns";
-// import StatsTab from "./Tabs/StatsTab";
+import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
-// import PortfolioTab from "./Tabs/PortfolioTab";
-// import TxListTab from "./Tabs/TxListTab";
-import dynamic from "next/dynamic";
+import PortfolioTab from "./Tabs/PortfolioTab";
+import TxListTab from "./Tabs/TxListTab";
 import { currentUser } from "@clerk/nextjs";
 import { redirect, notFound } from "next/navigation";
-
-const PortfolioTab = dynamic(() => import("./Tabs/PortfolioTab"), {
-  ssr: true,
-});
-
-const StatsTab = dynamic(() => import("./Tabs/StatsTab"), {
-  ssr: true,
-});
-
-const TxListTab = dynamic(() => import("./Tabs/TxListTab"), {
-  ssr: true,
-});
 
 export default async function ListPage({
   params: { id: listId },
