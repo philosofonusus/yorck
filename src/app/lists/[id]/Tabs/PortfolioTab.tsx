@@ -46,12 +46,12 @@ const PortfolioTab: React.FC = () => {
   );
 
   return totalPortfolio.length ? (
-    <TabsContent value="portfolio">
-      <Card className="p-6 flex flex-wrap gap-4">
+    <TabsContent data-lenis-prevent value="portfolio">
+      <Card className="flex flex-wrap gap-4 p-6">
         {totalPortfolio.map((el: any, idx: number) => {
           return (
             <div key={idx} className="flex items-center gap-2">
-              <Avatar className="h-10 w-10 bg-white">
+              <Avatar className="w-10 h-10 bg-white">
                 <AvatarImage src={el.logo_url} alt={el.symbol} />
                 <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
               </Avatar>
@@ -59,7 +59,7 @@ const PortfolioTab: React.FC = () => {
                 <TooltipProvider delayDuration={300}>
                   <Tooltip>
                     <TooltipTrigger className="text-left">
-                      <span className="cursor-pointer text-sm font-semibold text-muted-foreground">
+                      <span className="text-sm font-semibold cursor-pointer text-muted-foreground">
                         {el.optimized_symbol} ({el.chain})
                       </span>
                     </TooltipTrigger>

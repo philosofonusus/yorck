@@ -15,7 +15,7 @@ export default function StatsTab() {
   const [listInfo] = useAtom(listInfoAtom);
 
   return listInfo.selectedRows.length ? (
-    <TabsContent value="stats">
+    <TabsContent data-lenis-prevent value="stats">
       <Card className="p-6">
         <div className="flex flex-col gap-2">
           <NetCurveChart

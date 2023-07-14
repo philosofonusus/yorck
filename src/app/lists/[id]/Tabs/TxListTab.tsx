@@ -342,7 +342,7 @@ export default function TxListTab() {
   }, [transactionHistoryList]);
 
   return listInfo.selectedRows.length ? (
-    <TabsContent value="transactions">
+    <TabsContent data-lenis-prevent value="transactions">
       <Card className="p-6 overflow-y-scroll max-h-[400px]">
         {transactionHistoryList.map((tx: any, idx: number) => {
           return <TxEntry dictionary={dictionary} tx={tx} key={idx} />;
