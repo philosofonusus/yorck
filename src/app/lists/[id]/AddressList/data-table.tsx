@@ -43,7 +43,7 @@ export function DataTable<TData, TValue>({
   data,
   list,
 }: DataTableProps<TData, TValue>) {
-  const [listInfo, setListInfo] = useAtom(listInfoAtom);
+  const [_, setListInfo] = useAtom(listInfoAtom);
 
   const [rowSelection, setRowSelection] = React.useState({});
 

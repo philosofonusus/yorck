@@ -1,13 +1,17 @@
 "use client";
-
 import { Table } from "@tanstack/react-table";
 import { CheckSquare, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AddAddressesDialog from "../AddAddressesDialog";
-import { useState } from "react";
 import { Toggle } from "@/components/ui/toggle";
+import { useAtom } from "jotai";
+import { listInfoAtom } from "./atoms";
+import { monitofresh } from "@/services/monitofresh";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { deleteAddressesFromListAction } from "@/app/_actions/list";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -19,7 +23,8 @@ export function DataTableToolbar<TData>({
   listId,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const [isSelectedOnly, setIsSelectedOnly] = useState(false);
+  const [listInfo] = useAtom(listInfoAtom);
+  const router = useRouter();
 
   return (
     <div className="flex items-center justify-between">
@@ -56,6 +61,65 @@ export function DataTableToolbar<TData>({
             <X className="w-4 h-4 ml-2" />
           </Button>
         )}
+      </div>
+      <div className="flex ites-center gap-2.5">
+        {listInfo.selectedRows.length ? (
+          <>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                listInfo &&
+                toast.promise(
+                  monitofresh
+                    .refreshAddressData(
+                      listInfo.selectedRows.map((row: any) => row.address)
+                    )
+                    .then(() => router.refresh()),
+                  {
+                    loading: "Syncing addresses data...",
+                    success: "Addresses data synced!",
+                    error: "Failed to sync addresses data",
+                  }
+                )
+              }
+            >
+              Sync selected
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                listInfo &&
+                  toast.promise(
+                    deleteAddressesFromListAction({
+                      listId: listInfo.id,
+                      addresses: listInfo.selectedRows.map(
+                        (row: any) => row.address
+                      ),
+                    }).then(() => router.refresh()),
+                    {
+                      loading: "Deleting addresses...",
+                      success: "Addresses deleted",
+                      error: "Failed to delete addresses",
+                    }
+                  );
+              }}
+            >
+              Delete selected
+            </Button>
+          </>
+        ) : null}
+        <Button
+          variant="default"
+          onClick={() =>
+            table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()
+              ? table.resetRowSelection()
+              : table.toggleAllRowsSelected()
+          }
+        >
+          {table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()
+            ? `Deselect (${listInfo.selectedRows.length})`
+            : "Select All"}
+        </Button>
       </div>
     </div>
   );
