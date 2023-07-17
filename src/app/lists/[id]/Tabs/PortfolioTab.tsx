@@ -1,7 +1,7 @@
 "use client";
 
 import { TabsContent } from "@/components/ui/tabs";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { toast } from "sonner";
 import { selectedRowsAtom } from "../AddressList/atoms";
 import { Card } from "@/components/ui/card";
@@ -21,7 +21,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const PortfolioTab: React.FC = () => {
-  const [selectedRows] = useAtom(selectedRowsAtom);
+  const [selectedRows] = useAtomValue(selectedRowsAtom);
   const [_, copy] = useCopyToClipboard();
 
   const totalPortfolio = useMemo(

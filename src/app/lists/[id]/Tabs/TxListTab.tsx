@@ -1,7 +1,7 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { selectedRowsAtom } from "../AddressList/atoms";
 import { useMemo } from "react";
 import Image from "next/image";
@@ -265,11 +265,11 @@ const TxEntry = ({
   );
 };
 
-export default function TxListTab() {
-  const [selectedRows] = useAtom(selectedRowsAtom);
+const minTxValue = 0;
+const isHideTrashTransactionsModeActive = true;
 
-  const minTxValue = 0;
-  const isHideTrashTransactionsModeActive = true;
+export default function TxListTab() {
+  const [selectedRows] = useAtomValue(selectedRowsAtom);
 
   const transactionHistoryList = useMemo(
     () =>
@@ -305,7 +305,7 @@ export default function TxListTab() {
           return true;
         })
         .sort((a: any, b: any) => b.time_at - a.time_at),
-    [selectedRows, isHideTrashTransactionsModeActive, minTxValue]
+    [selectedRows]
   );
 
   const dictionary = useAsyncMemo(async () => {

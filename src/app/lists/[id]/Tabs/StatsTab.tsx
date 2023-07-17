@@ -1,5 +1,5 @@
 "use client";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { selectedRowsAtom } from "../AddressList/atoms";
 import { TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
@@ -12,7 +12,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 export default function StatsTab() {
-  const [selectedRows] = useAtom(selectedRowsAtom);
+  const [selectedRows] = useAtomValue(selectedRowsAtom);
 
   return selectedRows.length ? (
     <TabsContent data-lenis-prevent value="stats">
