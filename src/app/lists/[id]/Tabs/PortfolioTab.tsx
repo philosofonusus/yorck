@@ -3,7 +3,7 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { useAtom } from "jotai";
 import { toast } from "sonner";
-import { listInfoAtom } from "../AddressList/atoms";
+import { selectedRowsAtom } from "../AddressList/atoms";
 import { Card } from "@/components/ui/card";
 import { useCopyToClipboard } from "usehooks-ts";
 import {
@@ -21,13 +21,13 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const PortfolioTab: React.FC = () => {
-  const [listInfo] = useAtom(listInfoAtom);
+  const [selectedRows] = useAtom(selectedRowsAtom);
   const [_, copy] = useCopyToClipboard();
 
   const totalPortfolio = useMemo(
     () =>
-      listInfo.selectedRows.length
-        ? listInfo.selectedRows
+      selectedRows.length
+        ? selectedRows
             .map((el: any) => JSON.parse(el.balances))
             .flat()
             .filter((el: any) => el.price * el.amount > 500)
@@ -42,7 +42,7 @@ const PortfolioTab: React.FC = () => {
               return accumulator;
             }, [])
         : [],
-    [listInfo?.selectedRows]
+    [selectedRows]
   );
 
   return totalPortfolio.length ? (

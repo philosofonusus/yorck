@@ -13,6 +13,9 @@ dependencies:
   '@hookform/resolvers':
     specifier: ^3.1.1
     version: 3.1.1(react-hook-form@7.45.1)
+  '@legendapp/state':
+    specifier: ^1.4.0
+    version: 1.4.0(react@18.2.0)
   '@planetscale/database':
     specifier: ^1.8.0
     version: 1.8.0
@@ -100,6 +103,9 @@ dependencies:
   jotai:
     specifier: ^2.2.2
     version: 2.2.2(react@18.2.0)
+  jotai-optics:
+    specifier: ^0.3.0
+    version: 0.3.0(jotai@2.2.2)(optics-ts@2.4.1)
   ky:
     specifier: ^0.33.3
     version: 0.33.3
@@ -1213,6 +1219,14 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: false
+
+  /@legendapp/state@1.4.0(react@18.2.0):
+    resolution: {integrity: sha512-zvbftT8Cb8SHlmzdtm+SndAM7AOCmRU/kkKVQC9bItYFZsSSPadEkn2cmmxdVPvpDievNaAeASzHTa76AYcw/Q==}
+    dependencies:
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - react
     dev: false
 
   /@next/env@13.4.10:
@@ -4298,6 +4312,16 @@ packages:
     resolution: {integrity: sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==}
     dev: false
 
+  /jotai-optics@0.3.0(jotai@2.2.2)(optics-ts@2.4.1):
+    resolution: {integrity: sha512-5ttpCRREIBu6DJix0wlyBP6y1QDPlePnoMZSXNDi/FOkXZrhk9uIXKjwvw34/yBCHT5mYpFUD4sFDvRUU2vkvQ==}
+    peerDependencies:
+      jotai: '>=1.11.0'
+      optics-ts: '*'
+    dependencies:
+      jotai: 2.2.2(react@18.2.0)
+      optics-ts: 2.4.1
+    dev: false
+
   /jotai@2.2.2(react@18.2.0):
     resolution: {integrity: sha512-Cn8hnBg1sc5ppFwEgVGTfMR5WSM0hbAasd/bdAwIwTaum0j3OUPqBSC4tyk3jtB95vicML+RRWgKFOn6gtfN0A==}
     engines: {node: '>=12.20.0'}
@@ -4889,6 +4913,10 @@ packages:
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
+    dev: false
+
+  /optics-ts@2.4.1:
+    resolution: {integrity: sha512-HaYzMHvC80r7U/LqAd4hQyopDezC60PO2qF5GuIwALut2cl5rK1VWHsqTp0oqoJJWjiv6uXKqsO+Q2OO0C3MmQ==}
     dev: false
 
   /optionator@0.9.3:
@@ -5813,6 +5841,14 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.0
+    dev: false
+
+  /use-sync-external-store@1.2.0(react@18.2.0):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /usehooks-ts@2.9.1(react-dom@18.2.0)(react@18.2.0):

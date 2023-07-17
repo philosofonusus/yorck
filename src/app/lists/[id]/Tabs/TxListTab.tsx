@@ -2,7 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { useAtom } from "jotai";
-import { listInfoAtom } from "../AddressList/atoms";
+import { selectedRowsAtom } from "../AddressList/atoms";
 import { useMemo } from "react";
 import Image from "next/image";
 import {
@@ -266,14 +266,14 @@ const TxEntry = ({
 };
 
 export default function TxListTab() {
-  const [listInfo] = useAtom(listInfoAtom);
+  const [selectedRows] = useAtom(selectedRowsAtom);
 
   const minTxValue = 0;
   const isHideTrashTransactionsModeActive = true;
 
   const transactionHistoryList = useMemo(
     () =>
-      listInfo.selectedRows
+      selectedRows
         .map((el: any) =>
           JSON.parse(el.history_list).map((tx: any) => ({
             ...tx,
@@ -305,7 +305,7 @@ export default function TxListTab() {
           return true;
         })
         .sort((a: any, b: any) => b.time_at - a.time_at),
-    [listInfo, isHideTrashTransactionsModeActive, minTxValue]
+    [selectedRows, isHideTrashTransactionsModeActive, minTxValue]
   );
 
   const dictionary = useAsyncMemo(async () => {
@@ -341,7 +341,7 @@ export default function TxListTab() {
     );
   }, [transactionHistoryList]);
 
-  return listInfo.selectedRows.length ? (
+  return selectedRows.length ? (
     <TabsContent data-lenis-prevent value="transactions">
       <Card className="p-6 overflow-y-scroll max-h-[400px]">
         {transactionHistoryList.map((tx: any, idx: number) => {
