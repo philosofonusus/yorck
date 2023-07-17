@@ -269,7 +269,7 @@ const minTxValue = 0;
 const isHideTrashTransactionsModeActive = true;
 
 export default function TxListTab() {
-  const [selectedRows] = useAtomValue(selectedRowsAtom);
+  const selectedRows = useAtomValue(selectedRowsAtom);
 
   const transactionHistoryList = useMemo(
     () =>
@@ -341,7 +341,7 @@ export default function TxListTab() {
     );
   }, [transactionHistoryList]);
 
-  return selectedRows.length ? (
+  return selectedRows?.length ? (
     <TabsContent data-lenis-prevent value="transactions">
       <Card className="p-6 overflow-y-scroll max-h-[400px]">
         {transactionHistoryList.map((tx: any, idx: number) => {

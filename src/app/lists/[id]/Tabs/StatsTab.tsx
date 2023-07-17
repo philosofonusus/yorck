@@ -12,7 +12,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 export default function StatsTab() {
-  const [selectedRows] = useAtomValue(selectedRowsAtom);
+  const selectedRows = useAtomValue(selectedRowsAtom);
 
   return selectedRows.length ? (
     <TabsContent data-lenis-prevent value="stats">

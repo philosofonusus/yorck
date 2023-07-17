@@ -21,7 +21,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const PortfolioTab: React.FC = () => {
-  const [selectedRows] = useAtomValue(selectedRowsAtom);
+  const selectedRows = useAtomValue(selectedRowsAtom);
   const [_, copy] = useCopyToClipboard();
 
   const totalPortfolio = useMemo(
