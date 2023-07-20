@@ -8,6 +8,7 @@ export const monitofresh = {
         json: {
           addresses,
         },
+        timeout: false,
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
