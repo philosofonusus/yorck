@@ -76,7 +76,7 @@ export function DataTableToolbar<TData>({
                   monitofresh
                     .refreshAddressData(
                       listInfo.selectedRows.map((row: any) => row.address),
-                      await getToken()
+                      (await getToken()) as string
                     )
                     .then(() => router.refresh()),
                   {

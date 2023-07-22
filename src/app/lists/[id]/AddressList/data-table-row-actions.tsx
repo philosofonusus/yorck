@@ -78,7 +78,7 @@ export function DataTableRowActions<TData>({
                       //@ts-ignore
                       rowData.address,
                     ],
-                    await getToken()
+                    (await getToken()) as string
                   )
                   .then(() => router.refresh()),
                 {

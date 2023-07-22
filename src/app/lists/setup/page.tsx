@@ -67,7 +67,7 @@ export default function Home() {
                 .map((address) => address.toLowerCase().trim())
             ),
           ],
-          await getToken()
+          (await getToken()) as string
         )
         .then(async () => {
           await createListAction({ ...values, userId: user!.id });

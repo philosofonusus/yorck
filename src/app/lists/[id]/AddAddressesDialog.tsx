@@ -54,7 +54,7 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
                 .map((address) => address.toLowerCase().trim())
             ),
           ],
-          await getToken()
+          (await getToken()) as string
         )
         .then(async () => {
           await addAddressesToListAction({
