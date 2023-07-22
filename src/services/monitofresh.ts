@@ -1,7 +1,6 @@
 import ky from "ky";
 
 export const monitofresh = {
-  
   async refreshAddressData(addresses: string[], token: string) {
     await ky.post(
       `https://yorckufresh-production.up.railway.app/refreshAddressListData`,
@@ -12,7 +11,7 @@ export const monitofresh = {
 
         timeout: false,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
           "Access-Control-Allow-Origin": "*",
         },
       }
