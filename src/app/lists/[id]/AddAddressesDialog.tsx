@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { addressValidator } from "@/lib/addressValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useAuth } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import { addAddressesToListAction } from "../../_actions/list";
 import { toast } from "sonner";
@@ -37,6 +37,7 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
   const [isCreateListOpen, setIsCreateListOpen] = useState(false);
   const router = useRouter();
 
+  const { getToken } = useAuth();
   const form = useForm<z.infer<typeof formValidationSchema>>({
     resolver: zodResolver(formValidationSchema),
   });
@@ -45,13 +46,16 @@ const AddAddressesDialog = ({ listId }: { listId: string }) => {
     setIsCreateListOpen(false);
     toast.promise(
       monitofresh
-        .refreshAddressData([
-          ...new Set(
-            values.addresses
-              .split(/[\n,]/)
-              .map((address) => address.toLowerCase().trim())
-          ),
-        ])
+        .refreshAddressData(
+          [
+            ...new Set(
+              values.addresses
+                .split(/[\n,]/)
+                .map((address) => address.toLowerCase().trim())
+            ),
+          ],
+          await getToken()
+        )
         .then(async () => {
           await addAddressesToListAction({
             listId,

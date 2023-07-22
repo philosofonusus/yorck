@@ -30,7 +30,7 @@ import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { monitofresh } from "@/services/monitofresh";
-import { useUser } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 
 const formValidationSchema = z.object({
   listName: z
@@ -46,6 +46,7 @@ const CreateListDialog = () => {
   const [isCreateListOpen, setIsCreateListOpen] = useState(false);
   const { user } = useUser();
   const router = useRouter();
+  const { getToken } = useAuth();
 
   const form = useForm<z.infer<typeof formValidationSchema>>({
     resolver: zodResolver(formValidationSchema),
@@ -58,13 +59,16 @@ const CreateListDialog = () => {
     if (!user) return;
     await toast.promise(
       monitofresh
-        .refreshAddressData([
-          ...new Set(
-            values.addresses
-              .split(/[\n,]/)
-              .map((address) => address.toLowerCase().trim())
-          ),
-        ])
+        .refreshAddressData(
+          [
+            ...new Set(
+              values.addresses
+                .split(/[\n,]/)
+                .map((address) => address.toLowerCase().trim())
+            ),
+          ],
+          await getToken()
+        )
         .then(async () => {
           await createListAction({ ...values, userId: user.id });
         })

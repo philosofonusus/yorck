@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { listInfoAtom } from "./atoms";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import { useAuth } from "@clerk/nextjs";
 import { monitofresh } from "@/services/monitofresh";
 
 interface DataTableRowActionsProps<TData> {
@@ -31,6 +32,7 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const rowData = row.original;
   const router = useRouter();
+  const { getToken } = useAuth();
 
   const [listInfo, setListInfo] = useAtom(listInfoAtom);
 
@@ -67,14 +69,17 @@ export function DataTableRowActions<TData>({
           Toggle favorite
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => {
+          onSelect={async () => {
             listInfo &&
               toast.promise(
                 monitofresh
-                  .refreshAddressData([
-                    //@ts-ignore
-                    rowData.address,
-                  ])
+                  .refreshAddressData(
+                    [
+                      //@ts-ignore
+                      rowData.address,
+                    ],
+                    await getToken()
+                  )
                   .then(() => router.refresh()),
                 {
                   loading: "Syncing address data...",

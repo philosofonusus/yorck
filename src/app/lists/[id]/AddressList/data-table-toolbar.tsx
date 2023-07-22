@@ -9,6 +9,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { useAtom } from "jotai";
 import { listInfoAtom } from "./atoms";
 import { monitofresh } from "@/services/monitofresh";
+import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteAddressesFromListAction } from "@/app/_actions/list";
@@ -24,6 +25,8 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const [listInfo] = useAtom(listInfoAtom);
+
+  const { getToken } = useAuth();
   const router = useRouter();
 
   return (
@@ -67,12 +70,13 @@ export function DataTableToolbar<TData>({
           <>
             <Button
               variant="secondary"
-              onClick={() =>
+              onClick={async () =>
                 listInfo &&
                 toast.promise(
                   monitofresh
                     .refreshAddressData(
-                      listInfo.selectedRows.map((row: any) => row.address)
+                      listInfo.selectedRows.map((row: any) => row.address),
+                      await getToken()
                     )
                     .then(() => router.refresh()),
                   {
