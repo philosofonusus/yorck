@@ -3,7 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import Lenify from "@/components/lenify";
-import { Script } from "next/script";
+import Script from "next/script";
 
 export const metadata = {
   title: "Yorck - Crypto Monitoring",
