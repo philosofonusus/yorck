@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import Lenify from "@/components/lenify";
 import Script from "next/script";
+import { HighlightInit } from "@highlight-run/next/highlight-init";
 
 export const metadata = {
   title: "Yorck - Crypto Monitoring",
@@ -16,23 +17,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <Script
-            async
-            src="https://analytics.umami.is/script.js"
-            data-website-id="2df16cd7-bf77-4614-9d85-a7f37edeee52"
-          />
-        </head>
-        <body>
-          <Lenify />
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            {children}
-          </ThemeProvider>
-          <Toaster />
-        </body>
-      </html>
-    </ClerkProvider>
+    <>
+      <HighlightInit
+        projectId={"jd41k4d5"}
+        tracingOrigins
+        networkRecording={{
+          enabled: true,
+          recordHeadersAndBody: true,
+          urlBlocklist: [],
+        }}
+      />
+      <ClerkProvider>
+        <html lang="en" suppressHydrationWarning>
+          <head>
+            <Script
+              async
+              src="https://analytics.umami.is/script.js"
+              data-website-id="2df16cd7-bf77-4614-9d85-a7f37edeee52"
+            />
+          </head>
+          <body>
+            <Lenify />
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+              {children}
+            </ThemeProvider>
+            <Toaster />
+          </body>
+        </html>
+      </ClerkProvider>
+    </>
   );
 }
