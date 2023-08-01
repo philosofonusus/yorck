@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMemo } from "react";
+import { Badge } from "@/components/ui/badge";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 
 const formatter = new Intl.NumberFormat("en-US", {
@@ -37,8 +38,11 @@ const PortfolioTab: React.FC = () => {
                 found = accumulator.find(function (el: any) {
                   return el.id == id;
                 });
-              if (found) found.amount += cur.amount;
-              else accumulator.push(cur);
+              if (found) {
+                found.amount += cur.amount;
+                found.hits ??= 1;
+                found.hits++;
+              } else accumulator.push(cur);
               return accumulator;
             }, [])
         : [],
@@ -50,19 +54,26 @@ const PortfolioTab: React.FC = () => {
       <Card className="flex flex-wrap gap-4 p-6">
         {totalPortfolio.map((el: any, idx: number) => {
           return (
-            <div key={idx} className="flex items-center gap-2">
-              <Avatar className="w-10 h-10 bg-white">
-                <AvatarImage src={el.logo_url} alt={el.symbol} />
-                <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
-              </Avatar>
+            <Card key={idx} className="flex items-center gap-2 p-2.5">
+              <div className="relative">
+                <Avatar className="w-10 h-10 bg-white">
+                  <AvatarImage src={el.logo_url} alt={el.symbol} />
+
+                  <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
+                </Avatar>
+              </div>
               <div className="flex flex-col gap-1">
                 <TooltipProvider delayDuration={300}>
                   <Tooltip>
-                    <TooltipTrigger className="text-left">
-                      <span className="text-sm font-semibold cursor-pointer text-muted-foreground">
-                        {el.optimized_symbol} ({el.chain})
-                      </span>
-                    </TooltipTrigger>
+                    <div className="flex items-center flex-row gap-1.5">
+                      <TooltipTrigger className="text-left">
+                        <span className="text-sm font-semibold cursor-pointer text-muted-foreground">
+                          {el.optimized_symbol} ({el.chain})
+                        </span>
+                      </TooltipTrigger>
+
+                      <Badge className="h-4 mt-1 px-2">{el.hits || 1}</Badge>
+                    </div>
                     <TooltipContent
                       className="cursor-pointer"
                       onClick={() => {
@@ -79,7 +90,7 @@ const PortfolioTab: React.FC = () => {
                   {formatter.format(el.price * el.amount)}
                 </span>
               </div>
-            </div>
+            </Card>
           );
         })}
       </Card>

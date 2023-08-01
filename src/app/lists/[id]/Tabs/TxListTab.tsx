@@ -70,52 +70,25 @@ const TxEntry = ({
         </div>
       </div>
       <div className="flex flex-col">
-        {tx.sends
-          ?.filter((elx: any) => dictionary?.[elx?.token_id] && elx.price > 0)
-          .map((ely: any, idx: number) => {
-            return (
-              <div key={idx} className="flex items-center gap-2">
-                -{" "}
-                {dictionary[ely.token_id].logo_url ? (
-                  <Image
-                    src={dictionary[ely.token_id].logo_url}
-                    width={16}
-                    alt={ely.token_id}
-                    height={16}
-                  />
-                ) : (
-                  <div className="w-4 h-4 rounded-full bg-accent" />
-                )}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger className="text-left">
-                      <span className="font-semibold cursor-pointer">
-                        {dictionary[tx.token_id]?.optimized_symbol}
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      className="cursor-pointer"
-                      onClick={() => {
-                        copy(tx.token_id);
-                        toast.success("Copied to clipboard");
-                      }}
-                    >
-                      {tx.token_id}
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <span>
-                  {tx.amount} ({formatter.format(tx.price * tx.amount)})
-                </span>
-              </div>
-            );
-          })}
         {tx.receives
+          .map((el: any) => {
+            el.operation_type = "+";
+            return el;
+          })
+          .concat(
+            tx.sends.map((el: any) => {
+              el.operation_type = "-";
+              return el;
+            })
+          )
           ?.filter((elx: any) => dictionary?.[elx?.token_id] && elx.price > 0)
           .map((ely: any, idx: number) => {
+            if (!ely.token_id) {
+              console.log(ely);
+            }
             return (
               <div key={idx} className="flex items-center gap-2">
-                +{" "}
+                {ely.operation_type}{" "}
                 {dictionary[ely.token_id].logo_url ? (
                   <Image
                     src={dictionary[ely.token_id].logo_url}
@@ -145,7 +118,8 @@ const TxEntry = ({
                   </Tooltip>
                 </TooltipProvider>
                 <span>
-                  {ely.amount} ({formatter.format(ely.price * ely.amount)})
+                  {ely.amount} (
+                  {formatter.format(Number(ely.price) * Number(ely.amount))})
                 </span>
               </div>
             );
