@@ -15,6 +15,7 @@ import {
 import { useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
+import { balanceDataEntry } from "@/lib/validations/lists";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -29,13 +30,16 @@ const PortfolioTab: React.FC = () => {
     () =>
       selectedRows.length
         ? selectedRows
-            .map((el: any) => JSON.parse(el.balances))
+            .map((el) => JSON.parse(el.balances) as balanceDataEntry[])
             .flat()
-            .filter((el: any) => el.price * el.amount > 500)
-            .sort((a: any, b: any) => b.price * b.amount - a.price * a.amount)
-            .reduce(function (accumulator: any, cur: any) {
+            .filter((el) => el.price! && el.price * el.amount > 500)
+            .sort((a, b) => b.price! * b.amount - a.price! * a.amount)
+            .reduce(function (
+              accumulator: Array<balanceDataEntry & { hits?: number }>,
+              cur
+            ) {
               const id = cur.id,
-                found = accumulator.find(function (el: any) {
+                found = accumulator.find(function (el) {
                   return el.id == id;
                 });
               if (found) {
@@ -44,7 +48,8 @@ const PortfolioTab: React.FC = () => {
                 found.hits++;
               } else accumulator.push(cur);
               return accumulator;
-            }, [])
+            },
+            [])
         : [],
     [selectedRows]
   );
@@ -52,12 +57,12 @@ const PortfolioTab: React.FC = () => {
   return totalPortfolio.length ? (
     <TabsContent data-lenis-prevent value="portfolio">
       <Card className="flex flex-wrap gap-4 p-6">
-        {totalPortfolio.map((el: any, idx: number) => {
+        {totalPortfolio.map((el, idx: number) => {
           return (
             <Card key={idx} className="flex items-center gap-2 p-2.5">
               <div className="relative">
                 <Avatar className="w-10 h-10 bg-white">
-                  <AvatarImage src={el.logo_url} alt={el.symbol} />
+                  <AvatarImage src={el.logo_url ?? ""} alt={el.symbol} />
 
                   <AvatarFallback>{el.symbol.toUpperCase()}</AvatarFallback>
                 </Avatar>
@@ -87,7 +92,7 @@ const PortfolioTab: React.FC = () => {
                 </TooltipProvider>
 
                 <span className="text-sm font-semibold">
-                  {formatter.format(el.price * el.amount)}
+                  {formatter.format(el.price! * el.amount)}
                 </span>
               </div>
             </Card>

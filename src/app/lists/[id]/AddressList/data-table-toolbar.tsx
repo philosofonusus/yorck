@@ -75,7 +75,7 @@ export function DataTableToolbar<TData>({
                 toast.promise(
                   monitofresh
                     .refreshAddressData(
-                      listInfo.selectedRows.map((row: any) => row.address),
+                      listInfo.selectedRows.map((row) => row.address),
                       (await getToken()) as string
                     )
                     .then(() => router.refresh()),
@@ -97,7 +97,7 @@ export function DataTableToolbar<TData>({
                     deleteAddressesFromListAction({
                       listId: listInfo.id,
                       addresses: listInfo.selectedRows.map(
-                        (row: any) => row.address
+                        (row) => row.address
                       ),
                     }).then(() => router.refresh()),
                     {

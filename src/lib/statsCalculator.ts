@@ -1,4 +1,6 @@
-export const statsCalculator = (history_list: any[]) => {
+import { txEntry } from "./validations/lists";
+
+export const statsCalculator = (history_list: txEntry[]) => {
   const positions: {
     token: string;
     ethInvested: number;

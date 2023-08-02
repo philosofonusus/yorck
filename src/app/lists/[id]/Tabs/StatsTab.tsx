@@ -19,13 +19,11 @@ export default function StatsTab() {
       <Card className="p-6">
         <div className="flex flex-col gap-2">
           <NetCurveChart
-            charts={selectedRows.map((el: any) => ({
+            charts={selectedRows.map((el) => ({
               label: el.address,
               data: Object.entries(
-                JSON.parse(el.net_curve) as {
-                  [key: string]: number;
-                }
-              ).map(([date, value]: [string, number], idx) => ({
+                JSON.parse(el.net_curve) as Record<string, number>
+              ).map(([date, value], idx) => ({
                 time: +date as UTCTimestamp,
                 value,
               })),
@@ -36,7 +34,7 @@ export default function StatsTab() {
             <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
               {formatter.format(
                 selectedRows
-                  .map((el: any) => +el.usd_total)
+                  .map((el) => +el.usd_total)
 
                   .reduce((a: number, b: number) => a + b, 0)
               )}
@@ -47,7 +45,7 @@ export default function StatsTab() {
             <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
               {(
                 selectedRows
-                  .map((el: any) => +el.roi)
+                  .map((el) => +el.roi)
                   .reduce((a: number, b: number) => a + b, 0) /
                 selectedRows.length
               ).toFixed(1) + "%"}
@@ -58,7 +56,7 @@ export default function StatsTab() {
             <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
               {(
                 selectedRows
-                  .map((el: any) => +el.winrate)
+                  .map((el) => +el.winrate)
                   .reduce((a: number, b: number) => a + b, 0) /
                 selectedRows.length
               ).toFixed(2)}

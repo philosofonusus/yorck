@@ -16,7 +16,17 @@ import { statsCalculator } from "@/lib/statsCalculator";
 import PortfolioTab from "./Tabs/PortfolioTab";
 import TxListTab from "./Tabs/TxListTab";
 import { currentUser } from "@clerk/nextjs";
+import z from "zod";
 import { redirect, notFound } from "next/navigation";
+import { accountDataSchema, txDataSchema } from "@/lib/validations/lists";
+
+const listDataSchema = z.record(
+  z.string(),
+  z.object({
+    account: accountDataSchema,
+    history_list: z.array(txDataSchema),
+  })
+);
 
 export default async function ListPage({
   params: { id: listId },
@@ -40,18 +50,20 @@ export default async function ListPage({
   if (!list) {
     return notFound();
   }
-  const data = Object.assign(
-    {},
-    ...(await Promise.allSettled(
-      (list.addresses as string[]).map(async (address) => {
-        return {
-          [address]: {
-            account: await redis.get(`account:${address}`),
-            history_list: await redis.get(`history_list:${address}`),
-          },
-        };
-      })
-    ).then((res) => res.map((r: any) => r.value)))
+  const data = listDataSchema.parse(
+    Object.assign(
+      {},
+      ...(await Promise.allSettled(
+        (list.addresses as string[]).map(async (address) => {
+          return {
+            [address]: {
+              account: await redis.get(`account:${address}`),
+              history_list: await redis.get(`history_list:${address}`),
+            },
+          };
+        })
+      ).then((res) => res.map((r: any) => r.value)))
+    )
   );
   return (
     <div className="flex items-center justify-center w-full py-6 overflow-y-scroll">
@@ -94,20 +106,21 @@ export default async function ListPage({
               const addressData = data[address];
               let winrate = 0;
               let roi = 0;
-              if (addressData?.history_list) {
-                const _result = statsCalculator(addressData?.history_list);
+
+              if (addressData.history_list) {
+                const _result = statsCalculator(addressData.history_list);
                 winrate = _result.winrate;
                 roi = _result.roi;
               }
 
               return {
                 address,
-                net_curve: JSON.stringify(addressData?.account?.net_curve),
+                net_curve: JSON.stringify(addressData.account.net_curve),
                 isFavorite: (list.favorites as string[]).includes(address),
-                usd_total: addressData?.account?.usd_total,
-                history_list: JSON.stringify(addressData?.history_list),
-                balances: JSON.stringify(addressData?.account?.balances),
-                chains: ["eth"],
+                usd_total: addressData.account.usd_total.toString(),
+                history_list: JSON.stringify(addressData.history_list),
+                balances: JSON.stringify(addressData.account.balances),
+                chains: addressData.account.used_chains,
                 winrate,
                 roi,
               };

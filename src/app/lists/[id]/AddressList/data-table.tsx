@@ -31,6 +31,7 @@ import { useAtom } from "jotai";
 import { listInfoAtom } from "./atoms";
 import { InferModel } from "drizzle-orm";
 import { addressLists } from "@/lib/db/schema";
+import { MonitoredAddress } from "./columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -81,8 +82,10 @@ export function DataTable<TData, TValue>({
     if (!table) return;
 
     setListInfo({
-      ...list,
-      selectedRows: table.getSelectedRowModel().rows.map((el) => el.original),
+      ...(list as any),
+      selectedRows: table
+        .getSelectedRowModel()
+        .rows.map((el) => el.original as MonitoredAddress),
     });
   }, [table, rowSelection, setListInfo, list]);
 

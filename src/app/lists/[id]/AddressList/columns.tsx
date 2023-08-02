@@ -6,18 +6,15 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import DataTableFavoriteStar from "./data-table-favorite-star";
 
 export type MonitoredAddress = {
-  usd_total: string;
   address: string;
-  balances: string;
-  //   dex_roi: {
-  //     uniswap: string;
-  //     total: string;
-  //   };
+  net_curve: string;
   isFavorite: boolean;
-  winrate: number;
+  usd_total: string;
   history_list: string;
-  roi: number;
+  balances: string;
   chains: string[];
+  winrate: number;
+  roi: number;
 };
 
 export const columns: ColumnDef<MonitoredAddress>[] = [
@@ -27,9 +24,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
@@ -39,7 +34,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
       ) : (
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
       );
