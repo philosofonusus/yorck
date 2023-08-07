@@ -1,5 +1,6 @@
 import React from "react";
 import { createChart, ColorType, UTCTimestamp } from "lightweight-charts";
+import { block } from "million/react";
 
 interface NetCurveChartProps {
   charts: {
@@ -40,6 +41,9 @@ const randomColor = (() => {
 
 const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
   const chartRef = React.useRef<HTMLDivElement>(null);
+  const [chart, setChart] = React.useState<ReturnType<
+    typeof createChart
+  > | null>(null);
 
   React.useLayoutEffect(() => {
     if (!chartRef.current) return;
@@ -92,6 +96,15 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
         timeVisible: true,
       },
     });
+    setChart(chart);
+    return () => {
+      setChart(null);
+      chart.remove();
+    };
+  }, [chartRef]);
+
+  React.useLayoutEffect(() => {
+    if (!chart) return;
     charts.map((el) => {
       const color = randomColor();
       const series = chart.addAreaSeries({
@@ -102,12 +115,11 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
       });
       series.setData(el.data);
     });
-    return () => {
-      chart.remove();
-    };
-  }, [chartRef, charts]);
+  }, [chart, charts]);
 
   return <div className="w-1/2 aspect-[16/9]" ref={chartRef} />;
 };
 
-export default NetCurveChart;
+const NetCurveChartBlock = block(NetCurveChart);
+
+export default NetCurveChartBlock;

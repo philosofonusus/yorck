@@ -20,4 +20,6 @@ const nextConfig = {
     serverActions: true,
   },
 };
-export default million.next(nextConfig);
+export default million.next(nextConfig, {
+  auto: false,
+});
