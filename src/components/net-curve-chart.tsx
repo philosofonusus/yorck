@@ -1,5 +1,10 @@
-import React from "react";
-import { createChart, ColorType, UTCTimestamp } from "lightweight-charts";
+import React, { useEffect } from "react";
+import {
+  createChart,
+  ColorType,
+  UTCTimestamp,
+  ISeriesApi,
+} from "lightweight-charts";
 
 interface NetCurveChartProps {
   charts: {
@@ -43,7 +48,9 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
   const [chart, setChart] = React.useState<ReturnType<
     typeof createChart
   > | null>(null);
-  const [activeSeries, setActiveSeries] = React.useState<string[]>([]);
+  const [activeSeries, setActiveSeries] = React.useState<ISeriesApi<"Area">[]>(
+    []
+  );
 
   React.useLayoutEffect(() => {
     if (!chartRef.current) return;
@@ -108,7 +115,7 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
 
     charts.map((el) => {
       const title = el.label.slice(0, 6);
-      if (activeSeries.find((s) => s === title)) return;
+      if (activeSeries.find((s) => s.options().title === title)) return;
       const color = randomColor();
 
       const series = chart.addAreaSeries({
@@ -118,9 +125,30 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
         lineColor: color.replace("opacity", "1"),
       });
       series.setData(el.data);
-      setActiveSeries((prev) => [...prev, title]);
+      setActiveSeries((prev) => {
+        prev.push(series);
+        return prev;
+      });
     });
   }, [chart, charts, activeSeries]);
+
+  React.useLayoutEffect(() => {
+    if (!chart) return;
+    setActiveSeries((prev) =>
+      prev.filter((s) => {
+        if (
+          charts.map((el) => el.label.slice(0, 6)).includes(s.options().title)
+        ) {
+          return true;
+        } else {
+          try {
+            chart.removeSeries(s);
+          } catch {}
+          return false;
+        }
+      })
+    );
+  }, [charts, chart]);
 
   return <div className="w-1/2 aspect-[16/9]" ref={chartRef} />;
 };
