@@ -1,6 +1,5 @@
 import React from "react";
 import { createChart, ColorType, UTCTimestamp } from "lightweight-charts";
-import { block } from "million/react";
 
 interface NetCurveChartProps {
   charts: {
@@ -44,6 +43,7 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
   const [chart, setChart] = React.useState<ReturnType<
     typeof createChart
   > | null>(null);
+  const [activeSeries, setActiveSeries] = React.useState<string[]>([]);
 
   React.useLayoutEffect(() => {
     if (!chartRef.current) return;
@@ -105,8 +105,12 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
 
   React.useLayoutEffect(() => {
     if (!chart) return;
+
     charts.map((el) => {
+      const title = el.label.slice(0, 6);
+      if (activeSeries.find((s) => s === title)) return;
       const color = randomColor();
+
       const series = chart.addAreaSeries({
         title: el.label.slice(0, 6),
         topColor: color.replace("opacity", "0.56"),
@@ -114,12 +118,11 @@ const NetCurveChart: React.FC<NetCurveChartProps> = ({ charts }) => {
         lineColor: color.replace("opacity", "1"),
       });
       series.setData(el.data);
+      setActiveSeries((prev) => [...prev, title]);
     });
-  }, [chart, charts]);
+  }, [chart, charts, activeSeries]);
 
   return <div className="w-1/2 aspect-[16/9]" ref={chartRef} />;
 };
 
-const NetCurveChartBlock = block(NetCurveChart);
-
-export default NetCurveChartBlock;
+export default NetCurveChart;
