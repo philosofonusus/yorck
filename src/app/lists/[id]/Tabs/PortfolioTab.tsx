@@ -40,19 +40,34 @@ const PortfolioTab: React.FC = () => {
             .flatMap((el) =>
               (
                 JSON.parse(el.balances) as Array<
-                  balanceDataEntry & { owner: string; hits: string[] }
+                  balanceDataEntry & {
+                    owner: string;
+                    hits: {
+                      address: string;
+                      amount: number;
+                    }[];
+                  }
                 >
               ).map((b) => {
                 b.owner = el.address;
-                b.hits = [b.owner];
+                b.hits = [
+                  {
+                    amount: b.amount,
+                    address: b.owner,
+                  },
+                ];
                 return b;
               })
             )
-            .filter((el) => el.price! && el.price * el.amount > 500)
-            .sort((a, b) => b.price! * b.amount - a.price! * a.amount)
             .reduce(function (
               accumulator: Array<
-                balanceDataEntry & { hits: string[]; owner: string }
+                balanceDataEntry & {
+                  hits: {
+                    address: string;
+                    amount: number;
+                  }[];
+                  owner: string;
+                }
               >,
               cur
             ) {
@@ -62,11 +77,20 @@ const PortfolioTab: React.FC = () => {
                 });
               if (found) {
                 found.amount += cur.amount;
-                found.hits.push(cur.owner);
+                found.hits.push({
+                  address: cur.owner,
+                  amount: cur.amount,
+                });
               } else accumulator.push(cur);
               return accumulator;
-            },
-            [])
+            }, [])
+            .filter((el) => el.price! && el.price * el.amount > 500)
+            .sort(
+              (a, b) =>
+                b.price! * b.amount -
+                a.price! * a.amount -
+                (b.price! * b.amount - a.price! * a.amount)
+            )
         : [],
     [selectedRows]
   );
@@ -103,18 +127,32 @@ const PortfolioTab: React.FC = () => {
                           <ScrollArea className="w-full h-72">
                             <div className="p-4">
                               <h4 className="mb-4 text-sm font-medium leading-none">
-                                Owners
+                                Holders
                               </h4>
-                              {el.hits?.map((address) => (
-                                <>
-                                  <div className="text-sm" key={address}>
-                                    {address.slice(0, 6) +
-                                      "..." +
-                                      address.slice(-4)}
-                                  </div>
-                                  <Separator className="my-2" />
-                                </>
-                              ))}
+                              {el.hits
+                                ?.sort((a, b) => b.amount - a.amount)
+                                .map((hit) => (
+                                  <>
+                                    <div
+                                      className="flex items-center justify-between"
+                                      key={hit.address}
+                                    >
+                                      <span className="text-sm">
+                                        {hit.address.slice(0, 6) +
+                                          "..." +
+                                          hit.address.slice(-4)}
+                                      </span>
+                                      <span className="text-sm">
+                                        {(
+                                          (hit.amount / el.amount) *
+                                          100
+                                        ).toFixed(2)}
+                                        %
+                                      </span>
+                                    </div>
+                                    <Separator className="my-2" />
+                                  </>
+                                ))}
                             </div>
                           </ScrollArea>
                         </PopoverContent>
