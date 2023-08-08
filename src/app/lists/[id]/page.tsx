@@ -66,7 +66,7 @@ export default async function ListPage({
     )
   );
   return (
-    <div className="flex items-center justify-center w-full py-6 overflow-y-scroll">
+    <div className="container flex items-center justify-center w-full py-6 overflow-y-scroll">
       <Card className="w-full mx-6">
         <CardHeader>
           <Tabs defaultValue="stats">
