@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import Lenify from "@/components/lenify";
 import Script from "next/script";
-import { HighlightInit } from "@highlight-run/next/highlight-init";
+import { HighlightInit } from "@highlight-run/next/client";
 
 export const metadata = {
   title: "Yorck - Crypto Monitoring",
