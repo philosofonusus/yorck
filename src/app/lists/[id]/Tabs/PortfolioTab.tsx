@@ -16,6 +16,13 @@ import { useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { balanceDataEntry } from "@/lib/validations/lists";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -30,12 +37,23 @@ const PortfolioTab: React.FC = () => {
     () =>
       selectedRows.length
         ? selectedRows
-            .map((el) => JSON.parse(el.balances) as balanceDataEntry[])
-            .flat()
+            .flatMap((el) =>
+              (
+                JSON.parse(el.balances) as Array<
+                  balanceDataEntry & { owner: string; hits: string[] }
+                >
+              ).map((b) => {
+                b.owner = el.address;
+                b.hits = [b.owner];
+                return b;
+              })
+            )
             .filter((el) => el.price! && el.price * el.amount > 500)
             .sort((a, b) => b.price! * b.amount - a.price! * a.amount)
             .reduce(function (
-              accumulator: Array<balanceDataEntry & { hits?: number }>,
+              accumulator: Array<
+                balanceDataEntry & { hits: string[]; owner: string }
+              >,
               cur
             ) {
               const id = cur.id,
@@ -44,8 +62,7 @@ const PortfolioTab: React.FC = () => {
                 });
               if (found) {
                 found.amount += cur.amount;
-                found.hits ??= 1;
-                found.hits++;
+                found.hits.push(cur.owner);
               } else accumulator.push(cur);
               return accumulator;
             },
@@ -76,8 +93,32 @@ const PortfolioTab: React.FC = () => {
                           {el.optimized_symbol} ({el.chain})
                         </span>
                       </TooltipTrigger>
-
-                      <Badge className="h-4 mt-1 px-2">{el.hits || 1}</Badge>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Badge className="h-4 px-2 mt-1">
+                            {el.hits?.length || 1}
+                          </Badge>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-48 p-0">
+                          <ScrollArea className="w-full h-72">
+                            <div className="p-4">
+                              <h4 className="mb-4 text-sm font-medium leading-none">
+                                Owners
+                              </h4>
+                              {el.hits?.map((address) => (
+                                <>
+                                  <div className="text-sm" key={address}>
+                                    {address.slice(0, 6) +
+                                      "..." +
+                                      address.slice(-4)}
+                                  </div>
+                                  <Separator className="my-2" />
+                                </>
+                              ))}
+                            </div>
+                          </ScrollArea>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                     <TooltipContent
                       className="cursor-pointer"

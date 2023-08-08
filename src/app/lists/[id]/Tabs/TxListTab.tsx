@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { useAtomValue } from "jotai";
 import { selectedRowsAtom } from "../AddressList/atoms";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   Tooltip,
@@ -244,18 +244,18 @@ const isHideTrashTransactionsModeActive = true;
 
 export default function TxListTab() {
   const selectedRows = useAtomValue(selectedRowsAtom);
+  const [isDictionaryPending, setIsDictionaryPending] = useState(false);
 
   const transactionHistoryList = useMemo(
     () =>
       selectedRows
-        .map((el: any) =>
+        .flatMap((el: any) =>
           JSON.parse(el.history_list).map((tx: any) => ({
             ...tx,
             owner_address: el.address,
           }))
         )
         .filter(Boolean)
-        .flat()
         .filter((el: any) => {
           if (isHideTrashTransactionsModeActive) {
             return (
@@ -283,6 +283,7 @@ export default function TxListTab() {
   );
 
   const dictionary = useAsyncMemo(async () => {
+    setIsDictionaryPending(true);
     return Object.assign(
       {},
       ...(await Promise.allSettled([
@@ -300,22 +301,23 @@ export default function TxListTab() {
         ] as string[]),
         bulkTokenLookup([
           ...new Set(
-            transactionHistoryList
-              .map((el: any) =>
-                [
-                  ...el.receives?.map((elx: any) => elx.token_id),
-                  ...el.sends?.map((elx: any) => elx.token_id),
-                ].filter(Boolean)
-              )
-              .flat()
+            transactionHistoryList.flatMap((el: any) =>
+              [
+                ...el.receives?.map((elx: any) => elx.token_id),
+                ...el.sends?.map((elx: any) => elx.token_id),
+              ].filter(Boolean)
+            )
           ),
         ] as string[]),
+      ]).then((res) => {
+        setIsDictionaryPending(false);
         //@ts-ignore
-      ]).then((res) => res.map((el) => el.value)))
+        return res.map((el) => el.value);
+      }))
     );
   }, [transactionHistoryList]);
 
-  return selectedRows?.length ? (
+  return selectedRows?.length && !isDictionaryPending ? (
     <TabsContent data-lenis-prevent value="transactions">
       <Card className="p-6 overflow-y-scroll max-h-[400px]">
         {transactionHistoryList.map((tx: any, idx: number) => {
