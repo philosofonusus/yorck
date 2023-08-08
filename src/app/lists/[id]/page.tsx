@@ -53,18 +53,24 @@ export default async function ListPage({
   const data = listDataSchema.parse(
     Object.assign(
       {},
-      ...(await Promise.allSettled(
+      ...(await Promise.all(
         (list.addresses as string[]).map(async (address) => {
+          const [account, history_list] = await Promise.all([
+            redis.get(`account:${address}`),
+            redis.get(`history_list:${address}`),
+          ]);
+
           return {
             [address]: {
-              account: await redis.get(`account:${address}`),
-              history_list: await redis.get(`history_list:${address}`),
+              account,
+              history_list,
             },
           };
         })
-      ).then((res) => res.map((r: any) => r.value)))
+      ))
     )
   );
+
   return (
     <div className="container flex items-center justify-center w-full py-6 overflow-y-scroll">
       <Card className="w-full">
