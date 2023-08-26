@@ -6,25 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AddAddressesDialog from "../AddAddressesDialog";
 import { Toggle } from "@/components/ui/toggle";
-import { useAtom } from "jotai";
-import { listInfoAtom } from "./atoms";
+
+import { listInfo } from "./state";
 import { monitofresh } from "@/services/monitofresh";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteAddressesFromListAction } from "@/app/_actions/list";
+import { useSelector } from "@legendapp/state/react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   listId: string;
 }
 
-export function DataTableToolbar<TData>({
+export const DataTableToolbar = <TData,>({
   table,
   listId,
-}: DataTableToolbarProps<TData>) {
+}: DataTableToolbarProps<TData>) => {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const [listInfo] = useAtom(listInfoAtom);
+  const selectedRows = useSelector(listInfo.selectedRows);
 
   const { getToken } = useAuth();
   const router = useRouter();
@@ -66,7 +67,7 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex ites-center gap-2.5">
-        {listInfo.selectedRows.length ? (
+        {selectedRows.length ? (
           <>
             <Button
               variant="secondary"
@@ -75,7 +76,7 @@ export function DataTableToolbar<TData>({
                 toast.promise(
                   monitofresh
                     .refreshAddressData(
-                      listInfo.selectedRows.map((row) => row.address),
+                      selectedRows.map((row) => row!.address),
                       (await getToken()) as string
                     )
                     .then(() => router.refresh()),
@@ -95,10 +96,8 @@ export function DataTableToolbar<TData>({
                 listInfo &&
                   toast.promise(
                     deleteAddressesFromListAction({
-                      listId: listInfo.id,
-                      addresses: listInfo.selectedRows.map(
-                        (row) => row.address
-                      ),
+                      listId,
+                      addresses: selectedRows.map((row) => row!.address),
                     }).then(() => router.refresh()),
                     {
                       loading: "Deleting addresses...",
@@ -127,4 +126,4 @@ export function DataTableToolbar<TData>({
       </div>
     </div>
   );
-}
+};

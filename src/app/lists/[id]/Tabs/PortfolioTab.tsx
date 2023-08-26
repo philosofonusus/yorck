@@ -1,9 +1,7 @@
-"use client";
-
+"use client";;
 import { TabsContent } from "@/components/ui/tabs";
-import { useAtomValue } from "jotai";
 import { toast } from "sonner";
-import { selectedRowsAtom } from "../AddressList/atoms";
+import { listInfo } from "../AddressList/state";
 import { Card } from "@/components/ui/card";
 import { useCopyToClipboard } from "usehooks-ts";
 import {
@@ -23,6 +21,7 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { useSelector } from "@legendapp/state/react";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -30,7 +29,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 });
 
 const PortfolioTab: React.FC = () => {
-  const selectedRows = useAtomValue(selectedRowsAtom);
+  const selectedRows = useSelector(listInfo.selectedRows);
   const [_, copy] = useCopyToClipboard();
 
   const totalPortfolio = useMemo(
@@ -39,7 +38,7 @@ const PortfolioTab: React.FC = () => {
         ? selectedRows
             .flatMap((el) =>
               (
-                JSON.parse(el.balances) as Array<
+                JSON.parse(el!.balances) as Array<
                   balanceDataEntry & {
                     owner: string;
                     hits: {
@@ -49,7 +48,7 @@ const PortfolioTab: React.FC = () => {
                   }
                 >
               ).map((b) => {
-                b.owner = el.address;
+                b.owner = el!.address;
                 b.hits = [
                   {
                     amount: b.amount,

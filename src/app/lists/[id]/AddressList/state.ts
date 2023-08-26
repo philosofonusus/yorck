@@ -1,10 +1,9 @@
-import { atom } from "jotai";
-import { focusAtom } from "jotai-optics";
 import { MonitoredAddress } from "./columns";
 import { addressLists } from "@/lib/db/schema";
 import { InferModel } from "drizzle-orm";
+import { observable } from "@legendapp/state";
 
-export const listInfoAtom = atom<
+export const listInfo = observable<
   {
     selectedRows: MonitoredAddress[];
   } & Omit<InferModel<typeof addressLists>, "favorites" | "addresses"> & {
@@ -22,7 +21,3 @@ export const listInfoAtom = atom<
   favorites: [],
   addresses: [],
 });
-
-export const selectedRowsAtom = focusAtom(listInfoAtom, (optic) =>
-  optic.prop("selectedRows")
-);

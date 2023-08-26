@@ -1,5 +1,4 @@
-"use client";
-
+"use client";;
 import * as React from "react";
 import {
   ColumnDef,
@@ -27,8 +26,7 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { useAtom } from "jotai";
-import { listInfoAtom } from "./atoms";
+import { listInfo } from "./state";
 import { InferModel } from "drizzle-orm";
 import { addressLists } from "@/lib/db/schema";
 import { MonitoredAddress } from "./columns";
@@ -44,8 +42,6 @@ export function DataTable<TData, TValue>({
   data,
   list,
 }: DataTableProps<TData, TValue>) {
-  const [_, setListInfo] = useAtom(listInfoAtom);
-
   const [rowSelection, setRowSelection] = React.useState({});
 
   const [columnVisibility, setColumnVisibility] =
@@ -81,13 +77,13 @@ export function DataTable<TData, TValue>({
   React.useEffect(() => {
     if (!table) return;
 
-    setListInfo({
+    listInfo.set({
       ...(list as any),
       selectedRows: table
         .getSelectedRowModel()
         .rows.map((el) => el.original as MonitoredAddress),
     });
-  }, [table, rowSelection, setListInfo, list]);
+  }, [table, rowSelection, list]);
 
   // sync favorites
   React.useEffect(() => {

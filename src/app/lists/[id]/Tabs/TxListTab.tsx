@@ -1,8 +1,7 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
-import { useAtomValue } from "jotai";
-import { selectedRowsAtom } from "../AddressList/atoms";
+import { listInfo } from "../AddressList/state";
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
@@ -20,6 +19,7 @@ import {
 import { useAsyncMemo } from "@/lib/use-async-memo";
 import { useCopyToClipboard } from "usehooks-ts";
 import { toast } from "sonner";
+import { useSelector } from "@legendapp/state/react";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -243,20 +243,20 @@ const minTxValue = 0;
 const isHideTrashTransactionsModeActive = true;
 
 export default function TxListTab() {
-  const selectedRows = useAtomValue(selectedRowsAtom);
+  const selectedRows = useSelector(listInfo.selectedRows);
   const [isDictionaryPending, setIsDictionaryPending] = useState(false);
 
   const transactionHistoryList = useMemo(
     () =>
       selectedRows
-        .flatMap((el: any) =>
-          JSON.parse(el.history_list).map((tx: any) => ({
+        .flatMap((el) =>
+          JSON.parse(el!.history_list).map((tx: any) => ({
             ...tx,
-            owner_address: el.address,
+            owner_address: el!.address,
           }))
         )
         .filter(Boolean)
-        .filter((el: any) => {
+        .filter((el) => {
           if (isHideTrashTransactionsModeActive) {
             return (
               ((+el.sends?.[0]?.amount > 0 && +el.sends?.[0]?.price > 0) ||
@@ -267,7 +267,7 @@ export default function TxListTab() {
           }
           return true;
         })
-        .filter((el: any) => {
+        .filter((el) => {
           if (minTxValue) {
             const txValue = el.sends[0]
               ? el.sends[0].amount * el.sends[0].price

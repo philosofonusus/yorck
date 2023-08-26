@@ -17,11 +17,11 @@ import {
   toggleListFavoriteAction,
 } from "@/app/_actions/list";
 import { toast } from "sonner";
-import { listInfoAtom } from "./atoms";
+import { listInfo } from "./state";
 import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
 import { useAuth } from "@clerk/nextjs";
 import { monitofresh } from "@/services/monitofresh";
+import { useSelector } from "@legendapp/state/react";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -34,7 +34,7 @@ export function DataTableRowActions<TData>({
   const router = useRouter();
   const { getToken } = useAuth();
 
-  const [listInfo, setListInfo] = useAtom(listInfoAtom);
+  const listId = useSelector(listInfo.id);
 
   return (
     <DropdownMenu>
@@ -52,8 +52,7 @@ export function DataTableRowActions<TData>({
           onSelect={() => {
             toast.promise(
               toggleListFavoriteAction({
-                //@ts-ignore
-                listId: listInfo.id,
+                listId,
                 //@ts-ignore
                 address: rowData.address,
               }).then(() => router.refresh()),
@@ -100,8 +99,7 @@ export function DataTableRowActions<TData>({
             listInfo &&
               toast.promise(
                 deleteAddressesFromListAction({
-                  //@ts-ignore
-                  listId: listInfo.id,
+                  listId,
                   //@ts-ignore
                   addresses: [rowData.address],
                 }).then(() => router.refresh()),

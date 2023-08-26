@@ -67,7 +67,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
     accessorKey: "winrate",
     cell: ({ row }) => {
       return (
-        <span className="space-x-2 w-20">
+        <span className="w-20 space-x-2">
           {(row.getValue("winrate") as number).toFixed(2)}
         </span>
       );
@@ -79,7 +79,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
     ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("roi"));
-      return <span className="space-x-2 w-20">{amount.toFixed(1)}%</span>;
+      return <span className="w-20 space-x-2">{amount.toFixed(1)}%</span>;
     },
     accessorKey: "roi",
   },
@@ -93,7 +93,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
         style: "currency",
         currency: "USD",
       }).format(amount);
-      return <span className="space-x-2 w-20">{formatted}</span>;
+      return <span className="w-20 space-x-2">{formatted}</span>;
     },
     accessorKey: "usd_total",
   },

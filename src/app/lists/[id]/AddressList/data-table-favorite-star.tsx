@@ -1,21 +1,20 @@
 import { useRouter } from "next/navigation";
-import { listInfoAtom } from "./atoms";
+import { listInfo } from "./state";
 import { Star } from "lucide-react";
 import { toast } from "sonner";
-import { useAtom } from "jotai";
-import { toggleListFavoriteAction } from "@/app/_actions/list";
 
-const DataTableFavoriteStar = ({ address }: { address: string }) => {
+import { toggleListFavoriteAction } from "@/app/_actions/list";
+import { observer, useSelector } from "@legendapp/state/react";
+
+const DataTableFavoriteStar = observer(({ address }: { address: string }) => {
   const router = useRouter();
-  const [listInfo] = useAtom(listInfoAtom);
+  const listId = useSelector(listInfo.id);
   return (
     <Star
       onClick={() => {
         toast.promise(
           toggleListFavoriteAction({
-            //@ts-ignore
-            listId: listInfo.id,
-            //@ts-ignore
+            listId,
             address,
           }).then(() => router.refresh()),
           {
@@ -29,6 +28,6 @@ const DataTableFavoriteStar = ({ address }: { address: string }) => {
       className="cursor-pointer stroke-none fill-yellow-400"
     />
   );
-};
+});
 
 export default DataTableFavoriteStar;
