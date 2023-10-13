@@ -38,7 +38,7 @@ const TxEntry = ({
   const [_, copy] = useCopyToClipboard();
   return (
     <div className="flex items-center justify-between w-full py-5 border-b border-b-accent last-of-type:border-none">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-1/4 items-left">
         <span className="text-sm font-semibold">
           {new Date(+((tx.time_at as string) + "000")).toLocaleString("en-GB")}
         </span>
@@ -69,7 +69,7 @@ const TxEntry = ({
           </TooltipProvider>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-2/4 items-left">
         {tx.receives
           .map((el: any) => {
             el.operation_type = "+";
@@ -79,7 +79,7 @@ const TxEntry = ({
             tx.sends.map((el: any) => {
               el.operation_type = "-";
               return el;
-            })
+            }),
           )
           ?.filter((elx: any) => dictionary?.[elx?.token_id] && elx.price > 0)
           .map((ely: any, idx: number) => {
@@ -125,7 +125,7 @@ const TxEntry = ({
             );
           })}
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col w-1/4 gap-1 items-left">
         <span className="font-semibold">
           Owner:{" "}
           <TooltipProvider>
@@ -196,7 +196,7 @@ const TxEntry = ({
           </TooltipProvider>
         </span>
       </div>
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col w-1/4 gap-1.5 items-left">
         <span className="text-muted-foreground">{tx.tx?.name}</span>
         {tx?.project_id ? (
           <div className="flex items-center gap-2">
@@ -219,21 +219,21 @@ const TxEntry = ({
         ) : (
           <></>
         )}
-        {tx?.cex_id ? (
-          <div className="flex items-center gap-2">
-            <Image
-              src={dictionary?.[tx.cex_id]?.logo_url}
-              width={24}
-              alt={dictionary?.[tx.cex_id]?.name}
-              height={24}
-            />
-            <span className="font-semibold text-white">
-              {dictionary?.[tx.cex_id]?.name}
-            </span>
-          </div>
-        ) : (
-          <></>
-        )}
+        <div className="w-1/4 items-left">
+          {tx?.cex_id ? (
+            <div className="flex items-center gap-2">
+              <Image
+                src={dictionary?.[tx.cex_id]?.logo_url}
+                width={24}
+                alt={dictionary?.[tx.cex_id]?.name}
+                height={24}
+              />
+              <span className="font-semibold text-white">
+                {dictionary?.[tx.cex_id]?.name}
+              </span>
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -253,7 +253,7 @@ export default function TxListTab() {
           JSON.parse(el!.history_list).map((tx: any) => ({
             ...tx,
             owner_address: el!.address,
-          }))
+          })),
         )
         .filter(Boolean)
         .filter((el) => {
@@ -279,7 +279,7 @@ export default function TxListTab() {
           return true;
         })
         .sort((a: any, b: any) => b.time_at - a.time_at),
-    [selectedRows]
+    [selectedRows],
   );
 
   const dictionary = useAsyncMemo(async () => {
@@ -289,14 +289,14 @@ export default function TxListTab() {
       ...(await Promise.allSettled([
         bulkCexLookup([
           ...new Set(
-            transactionHistoryList.map((el: any) => el.cex_id).filter(Boolean)
+            transactionHistoryList.map((el: any) => el.cex_id).filter(Boolean),
           ),
         ] as string[]),
         bulkProjectLookup([
           ...new Set(
             transactionHistoryList
               .map((el: any) => el.project_id)
-              .filter(Boolean)
+              .filter(Boolean),
           ),
         ] as string[]),
         bulkTokenLookup([
@@ -305,15 +305,15 @@ export default function TxListTab() {
               [
                 ...el.receives?.map((elx: any) => elx.token_id),
                 ...el.sends?.map((elx: any) => elx.token_id),
-              ].filter(Boolean)
-            )
+              ].filter(Boolean),
+            ),
           ),
         ] as string[]),
       ]).then((res) => {
         setIsDictionaryPending(false);
         //@ts-ignore
         return res.map((el) => el.value);
-      }))
+      })),
     );
   }, [transactionHistoryList]);
 

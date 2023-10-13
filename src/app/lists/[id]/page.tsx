@@ -25,7 +25,7 @@ const listDataSchema = z.record(
   z.object({
     account: accountDataSchema,
     history_list: z.array(txDataSchema),
-  })
+  }),
 );
 
 export default async function ListPage({
@@ -35,6 +35,7 @@ export default async function ListPage({
     id: string;
   };
 }) {
+  console.time("ssr");
   const user = await currentUser();
 
   if (!user) {
@@ -51,6 +52,7 @@ export default async function ListPage({
     return notFound();
   }
 
+  console.time("data");
   const data = listDataSchema.parse(
     Object.assign(
       {},
@@ -67,10 +69,12 @@ export default async function ListPage({
               history_list,
             },
           };
-        })
-      ))
-    )
+        }),
+      )),
+    ),
   );
+  console.timeEnd("data");
+  console.timeEnd("ssr");
 
   return (
     <div className="container flex items-center justify-center w-full py-6 overflow-y-scroll">

@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { listInfo } from "../AddressList/state";
@@ -56,7 +56,7 @@ const PortfolioTab: React.FC = () => {
                   },
                 ];
                 return b;
-              })
+              }),
             )
             .reduce(function (
               accumulator: Array<
@@ -68,7 +68,7 @@ const PortfolioTab: React.FC = () => {
                   owner: string;
                 }
               >,
-              cur
+              cur,
             ) {
               const id = cur.id,
                 found = accumulator.find(function (el) {
@@ -88,18 +88,18 @@ const PortfolioTab: React.FC = () => {
               (a, b) =>
                 b.price! * b.amount -
                 a.price! * a.amount -
-                (b.price! * b.amount - a.price! * a.amount)
+                (b.price! * b.amount - a.price! * a.amount),
             )
         : [],
-    [selectedRows]
+    [selectedRows],
   );
 
   return totalPortfolio.length ? (
     <TabsContent data-lenis-prevent value="portfolio">
       <Card className="flex flex-wrap gap-4 p-6">
-        {totalPortfolio.map((el, idx: number) => {
+        {totalPortfolio.map((el, idx) => {
           return (
-            <Card key={idx} className="flex items-center gap-2 p-2.5">
+            <Card key={el.id + idx} className="flex items-center gap-2 p-2.5">
               <div className="relative">
                 <Avatar className="w-10 h-10 bg-white">
                   <AvatarImage src={el.logo_url ?? ""} alt={el.symbol} />
@@ -130,11 +130,11 @@ const PortfolioTab: React.FC = () => {
                               </h4>
                               {el.hits
                                 ?.sort((a, b) => b.amount - a.amount)
-                                .map((hit) => (
+                                .map((hit, idx) => (
                                   <>
                                     <div
                                       className="flex items-center justify-between"
-                                      key={hit.address}
+                                      key={hit.address + idx}
                                     >
                                       <span className="text-sm">
                                         {hit.address.slice(0, 6) +

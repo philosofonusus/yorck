@@ -2,35 +2,34 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardTitle,
   CardContent,
-  CardHeader,
-  CardFooter,
   CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import { useUser } from "@clerk/nextjs";
-import { addressValidator } from "@/lib/addressValidator";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { nanoid } from "nanoid";
 import {
   Form,
-  FormField,
   FormControl,
-  FormMessage,
-  FormLabel,
+  FormField,
   FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import ClientOnly from "../../clientOnly";
-import { createListAction } from "../../_actions/list";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useAuth } from "@clerk/nextjs";
+import { addressValidator } from "@/lib/addressValidator";
 import { monitofresh } from "@/services/monitofresh";
+import { useAuth, useUser } from "@clerk/nextjs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { nanoid } from "nanoid";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { createListAction } from "../../_actions/list";
+import ClientOnly from "../../clientOnly";
 
 const formValidationSchema = z.object({
   listName: z
@@ -64,10 +63,10 @@ export default function Home() {
             ...new Set(
               values.addresses
                 .split(/[\n,]/)
-                .map((address) => address.toLowerCase().trim())
+                .map((address) => address.toLowerCase().trim()),
             ),
           ],
-          (await getToken()) as string
+          (await getToken()) as string,
         )
         .then(async () => {
           await createListAction({ ...values, userId: user!.id });
@@ -80,7 +79,7 @@ export default function Home() {
         loading: "Creating list...",
         success: "List created!",
         error: "Something went wrong",
-      }
+      },
     );
   }
 

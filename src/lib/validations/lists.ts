@@ -1,6 +1,16 @@
 import z from "zod";
 import { chainList } from "../chainlist";
 
+export function fallback<T extends z.Schema<any>>(
+  schema: T,
+  value: z.infer<T>,
+) {
+  return z.any().transform((val) => {
+    const safe = schema.safeParse(val);
+    return safe.success ? safe.data : value;
+  });
+}
+
 export const balanceDataEntrySchema = z.object({
   amount: z.number(),
   balance: z.number().optional(),
@@ -13,7 +23,7 @@ export const balanceDataEntrySchema = z.object({
   is_verified: z.boolean(),
   is_wallet: z.boolean(),
   logo_url: z.string().nullable(),
-  name: z.string(),
+  name: fallback(z.string(), "None"),
   optimized_symbol: z.string().nullable(),
   price: z.number().nullable(),
   price_24h_change: z.number().nullable().optional(),
@@ -71,7 +81,7 @@ export const txDataSchema = z.object({
   chain: z.enum(["eth", ...chainList.map((chain) => chain.id)]),
   id: z.string(),
   is_scam: z.boolean(),
-  other_addr: z.string(),
+  other_addr: fallback(z.string(), "None"),
   project_id: z.string().nullable(),
   receives: z.array(
     z.object({
@@ -79,7 +89,7 @@ export const txDataSchema = z.object({
       price: z.number().nullable().optional(),
       from_addr: z.string(),
       token_id: z.string(),
-    })
+    }),
   ),
   sends: z.array(
     z.object({
@@ -87,7 +97,7 @@ export const txDataSchema = z.object({
       price: z.number().nullable().optional(),
       to_addr: z.string(),
       token_id: z.string(),
-    })
+    }),
   ),
   time_at: z.number(),
   token_approve: z
