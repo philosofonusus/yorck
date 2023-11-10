@@ -414,42 +414,6 @@ export const chainList = [
     wrapped: "0xaeaaf0e2c81af264101b9129c00f4440ccf0f720",
   },
   {
-    block_interval: 5,
-    explorer_host: "https://explorer.palm.io",
-    id: "palm",
-    is_support_archive: false,
-    is_support_history: false,
-    logo_url:
-      "https://static.debank.com/image/chain/logo_url/palm/ece828c59e643b8a8a13aa99145ae7d7.png",
-    name: "Palm",
-    network_id: 11297108109,
-    prefix: "palm_",
-    start_at: "2021-06-10",
-    svg_logo_url:
-      "https://static.debank.com/image/chain/svg_logo_url/palm/740c5410cec635857d8f3682a9f1120a",
-    token_id: "palm",
-    token_symbol: "PALM",
-    wrapped: "0xf98cabf0a963452c5536330408b2590567611a71",
-  },
-  {
-    block_interval: 21,
-    explorer_host: "https://blockscout.com/shiden",
-    id: "sdn",
-    is_support_archive: false,
-    is_support_history: true,
-    logo_url:
-      "https://static.debank.com/image/chain/logo_url/sdn/0baaa4ee7cb16feed71119b062ccd277.png",
-    name: "Shiden",
-    network_id: 336,
-    prefix: "sdn_",
-    start_at: "2021-09-15",
-    svg_logo_url:
-      "https://static.debank.com/image/chain/svg_logo_url/sdn/1949ee196fd772aed4771882114c0874",
-    token_id: "sdn",
-    token_symbol: "SDN",
-    wrapped: "0x0f933dc137d21ca519ae4c7e93f87a4c8ef365ef",
-  },
-  {
     block_interval: 10,
     explorer_host: "https://iotexscan.io",
     id: "iotx",
@@ -1223,5 +1187,23 @@ export const chainList = [
     token_id: "pgn",
     token_symbol: "ETH",
     wrapped: "",
+  },
+  {
+    block_interval: 6,
+    explorer_host: "https://starscan.io/evm",
+    id: "fx",
+    is_support_archive: false,
+    is_support_history: false,
+    logo_url:
+      "https://static.debank.com/image/chain/logo_url/fx/6fee82420b2394e0b68d7d7e692a0a01.png",
+    name: "Function X",
+    network_id: 530,
+    prefix: "fx_",
+    start_at: "2021-07-05",
+    svg_logo_url:
+      "https://static.debank.com/image/chain/svg_logo_url/fx/e413799898d4fc09aea9c4b78ebfa2a9.svg",
+    token_id: "fx",
+    token_symbol: "FX",
+    wrapped: "0x80b5a32e4f032b2a058b4f29ec95eefeeb87adcd",
   },
 ];
