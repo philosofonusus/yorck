@@ -3,7 +3,7 @@ import ky from "ky";
 export const monitofresh = {
   async refreshAddressData(addresses: string[], token: string) {
     await ky.post(
-      `https://yorckufresh-production.up.railway.app/refreshAddressListData`,
+      `https://yorckufresher-production.up.railway.app/refreshAddressListData`,
       {
         json: {
           addresses,
@@ -14,7 +14,7 @@ export const monitofresh = {
           Authorization: token,
           "Access-Control-Allow-Origin": "*",
         },
-      }
+      },
     );
   },
 };
