@@ -21,5 +21,6 @@ const nextConfig = {
   },
 };
 export default million.next(nextConfig, {
-  auto: false,
+  auto: true,
+  rsc: true,
 });
