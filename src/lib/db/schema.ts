@@ -1,14 +1,4 @@
-import {
-  datetime,
-  index,
-  int,
-  json,
-  mysqlTable,
-  text,
-  timestamp,
-  uniqueIndex,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { json, mysqlTable, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const addressLists = mysqlTable("address_lists", {
   id: varchar("id", { length: 255 }).primaryKey().notNull(),

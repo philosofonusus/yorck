@@ -17,7 +17,6 @@ const nextConfig = {
   },
   experimental: {
     // serverComponentsExternalPackages: ["mysql2"],
-    serverActions: true,
   },
 };
 export default million.next(nextConfig, {

@@ -1,7 +1,7 @@
 "use client";
 import { TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { listInfo } from "../AddressList/state";
+import { listInfo, tableData } from "../AddressList/state";
 import { Card } from "@/components/ui/card";
 import { useCopyToClipboard } from "usehooks-ts";
 import {
@@ -22,6 +22,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useSelector } from "@legendapp/state/react";
+import { useControls, folder } from "leva";
+import { useRouter } from "next/navigation";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -30,7 +32,15 @@ const formatter = new Intl.NumberFormat("en-US", {
 
 const PortfolioTab: React.FC = () => {
   const selectedRows = useSelector(listInfo.selectedRows);
+  const table = useSelector(tableData);
   const [_, copy] = useCopyToClipboard();
+  const router = useRouter();
+
+  const { minAmount } = useControls("Portfolio", {
+    balances: folder({
+      minAmount: 500,
+    }),
+  });
 
   const totalPortfolio = useMemo(
     () =>
@@ -83,7 +93,7 @@ const PortfolioTab: React.FC = () => {
               } else accumulator.push(cur);
               return accumulator;
             }, [])
-            .filter((el) => el.price! && el.price * el.amount > 500)
+            .filter((el) => el.price! && el.price * el.amount > minAmount)
             .sort(
               (a, b) =>
                 b.price! * b.amount -
@@ -91,7 +101,7 @@ const PortfolioTab: React.FC = () => {
                 (b.price! * b.amount - a.price! * a.amount),
             )
         : [],
-    [selectedRows],
+    [selectedRows, minAmount],
   );
 
   return totalPortfolio.length ? (
@@ -133,7 +143,25 @@ const PortfolioTab: React.FC = () => {
                                 .map((hit, idx) => (
                                   <>
                                     <div
-                                      className="flex items-center justify-between"
+                                      className="flex items-center cursor-pointer justify-between"
+                                      onClick={() => {
+                                        table
+                                          ?.getColumn("address")
+                                          ?.setFilterValue(hit.address);
+                                        const tableElement =
+                                          document.getElementById(
+                                            "address-list",
+                                          );
+                                        if (tableElement) {
+                                          window.scrollTo({
+                                            top: tableElement?.getBoundingClientRect()
+                                              .top,
+                                            behavior: "smooth",
+                                          });
+                                        }
+                                        copy(hit.address);
+                                        toast.success("Copied to clipboard");
+                                      }}
                                       key={hit.address + idx}
                                     >
                                       <span className="text-sm">

@@ -1,6 +1,6 @@
 "use client";
 import { Table } from "@tanstack/react-table";
-import { CheckSquare, X } from "lucide-react";
+import { CheckSquare, Star, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,15 +44,27 @@ export const DataTableToolbar = <TData,>({
         <AddAddressesDialog listId={listId} />
 
         <Toggle
-          pressed={
-            (table.getColumn("select")?.getFilterValue() as boolean) ?? false
-          }
+          pressed={table.getColumn("select")?.getFilterValue() === "selected"}
           onPressedChange={(value) =>
-            table.getColumn("select")?.setFilterValue(value ? true : undefined)
+            table
+              .getColumn("select")
+              ?.setFilterValue(value ? "selected" : undefined)
           }
           className="flex items-center justify-center w-8 h-8 p-0"
         >
           <CheckSquare className="w-4 h-4" />
+        </Toggle>
+
+        <Toggle
+          pressed={table.getColumn("select")?.getFilterValue() === "favorite"}
+          onPressedChange={(value) =>
+            table
+              .getColumn("select")
+              ?.setFilterValue(value ? "favorite" : undefined)
+          }
+          className="flex items-center justify-center w-8 h-8 p-0"
+        >
+          <Star className="w-4 h-4" />
         </Toggle>
 
         {isFiltered && (
@@ -77,14 +89,14 @@ export const DataTableToolbar = <TData,>({
                   monitofresh
                     .refreshAddressData(
                       selectedRows.map((row) => row!.address),
-                      (await getToken()) as string
+                      (await getToken()) as string,
                     )
                     .then(() => router.refresh()),
                   {
                     loading: "Syncing addresses data...",
                     success: "Addresses data synced!",
                     error: "Failed to sync addresses data",
-                  }
+                  },
                 )
               }
             >
@@ -103,7 +115,7 @@ export const DataTableToolbar = <TData,>({
                       loading: "Deleting addresses...",
                       success: "Addresses deleted",
                       error: "Failed to delete addresses",
-                    }
+                    },
                   );
               }}
             >

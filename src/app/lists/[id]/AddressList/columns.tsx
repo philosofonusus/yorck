@@ -43,8 +43,11 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
     enableSorting: false,
     enableHiding: false,
     filterFn: (row, _, value) => {
-      if (value) {
+      if (value === "selected") {
         return row.getIsSelected();
+      }
+      if (value === "favorite") {
+        return row.original.isFavorite;
       }
       return true;
     },

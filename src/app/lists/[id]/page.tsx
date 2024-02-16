@@ -19,6 +19,7 @@ import { currentUser } from "@clerk/nextjs";
 import z from "zod";
 import { redirect, notFound } from "next/navigation";
 import { accountDataSchema, txDataSchema } from "@/lib/validations/lists";
+import { LevaCog } from "./LevaCog";
 
 const listDataSchema = z.record(
   z.string(),
@@ -95,13 +96,7 @@ export default async function ListPage({
               </div>
               <div className="flex items-center gap-3">
                 <Badge>{(list.addresses as string[]).length}</Badge>
-
-                <Button
-                  variant="secondary"
-                  className="w-8 h-8 p-0 rounded-full"
-                >
-                  <CogIcon className="w-4 h-4" />
-                </Button>
+                <LevaCog />
               </div>
             </CardTitle>
             <StatsTab />

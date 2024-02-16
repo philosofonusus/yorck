@@ -2,6 +2,7 @@ import { MonitoredAddress } from "./columns";
 import { addressLists } from "@/lib/db/schema";
 import { InferModel } from "drizzle-orm";
 import { observable } from "@legendapp/state";
+import { Table } from "@tanstack/react-table";
 
 export const listInfo = observable<
   {
@@ -21,3 +22,5 @@ export const listInfo = observable<
   favorites: [],
   addresses: [],
 });
+
+export const tableData = observable<Table<any> | undefined>(undefined);

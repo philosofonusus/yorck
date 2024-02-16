@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import * as React from "react";
 import {
   ColumnDef,
@@ -26,7 +26,7 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { listInfo } from "./state";
+import { listInfo, tableData } from "./state";
 import { InferModel } from "drizzle-orm";
 import { addressLists } from "@/lib/db/schema";
 import { MonitoredAddress } from "./columns";
@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -83,6 +83,7 @@ export function DataTable<TData, TValue>({
         .getSelectedRowModel()
         .rows.map((el) => el.original as MonitoredAddress),
     });
+    tableData.set(table);
   }, [table, rowSelection, list]);
 
   // sync favorites
@@ -93,7 +94,7 @@ export function DataTable<TData, TValue>({
           acc: {
             [key: string]: boolean;
           },
-          row
+          row,
         ) => {
           acc[
             (list.addresses as string[])
@@ -102,13 +103,13 @@ export function DataTable<TData, TValue>({
           ] = true;
           return acc;
         },
-        {}
-      )
+        {},
+      ),
     );
   }, [list.favorites, list.addresses]);
 
   return (
-    <div className="space-y-4">
+    <div id="address-list" className="space-y-4">
       <DataTableToolbar listId={list.id} table={table} />
       <div className="border rounded-md">
         <Table>
@@ -122,7 +123,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -141,7 +142,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
