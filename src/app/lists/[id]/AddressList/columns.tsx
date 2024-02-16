@@ -98,6 +98,15 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
       }).format(amount);
       return <span className="w-20 space-x-2">{formatted}</span>;
     },
+    filterFn: (row, _, value) => {
+      if (value) {
+        const min = value.min;
+        const max = value.max;
+        const amount = parseFloat(row.getValue("usd_total"));
+        return amount >= min && amount <= max;
+      }
+      return true;
+    },
     accessorKey: "usd_total",
   },
   {

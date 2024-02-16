@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteAddressesFromListAction } from "@/app/_actions/list";
 import { useSelector } from "@legendapp/state/react";
+import { Slider } from "@/components/ui/slider";
+import { useMemo } from "react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -27,6 +29,14 @@ export const DataTableToolbar = <TData,>({
   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedRows = useSelector(listInfo.selectedRows);
 
+  const [minValue, maxValue] = useMemo(() => {
+    const values = table
+      .getRowModel()
+      .rows.map((row) => parseFloat(row.getValue("usd_total")));
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    return [min, max];
+  }, [table]);
   const { getToken } = useAuth();
   const router = useRouter();
 
@@ -66,6 +76,17 @@ export const DataTableToolbar = <TData,>({
         >
           <Star className="w-4 h-4" />
         </Toggle>
+
+        <Slider
+          defaultValue={[minValue, maxValue]}
+          min={minValue}
+          max={maxValue}
+          onValueChange={([min, max]) => {
+            table.getColumn("usd_total")?.setFilterValue({ min, max });
+          }}
+          className="w-28"
+          step={maxValue / 100}
+        />
 
         {isFiltered && (
           <Button
