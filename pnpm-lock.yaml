@@ -107,12 +107,6 @@ dependencies:
   ethereum-cryptography:
     specifier: ^2.1.3
     version: 2.1.3
-  jotai:
-    specifier: ^2.6.4
-    version: 2.6.4(@types/react@18.2.14)(react@18.2.0)
-  jotai-optics:
-    specifier: ^0.3.2
-    version: 0.3.2(jotai@2.6.4)(optics-ts@2.4.1)
   ky:
     specifier: ^0.33.3
     version: 0.33.3
@@ -4180,32 +4174,6 @@ packages:
     resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
     dev: false
 
-  /jotai-optics@0.3.2(jotai@2.6.4)(optics-ts@2.4.1):
-    resolution: {integrity: sha512-RH6SvqU5hmkVqnHmaqf9zBXvIAs4jLxkDHS4fr5ljuBKHs8+HQ02v+9hX7ahTppxx6dUb0GGUE80jQKJ0kFTLw==}
-    peerDependencies:
-      jotai: '>=1.11.0'
-      optics-ts: '*'
-    dependencies:
-      jotai: 2.6.4(@types/react@18.2.14)(react@18.2.0)
-      optics-ts: 2.4.1
-    dev: false
-
-  /jotai@2.6.4(@types/react@18.2.14)(react@18.2.0):
-    resolution: {integrity: sha512-RniwQPX4893YlNR1muOtyUGHYaTD1fhEN4qnOuZJSrDHj6xdEMrqlRSN/hCm2fshwk78ruecB/P2l+NCVWe6TQ==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      '@types/react': 18.2.14
-      react: 18.2.0
-    dev: false
-
   /js-cookie@3.0.1:
     resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
     engines: {node: '>=12'}
@@ -4784,10 +4752,6 @@ packages:
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
-    dev: false
-
-  /optics-ts@2.4.1:
-    resolution: {integrity: sha512-HaYzMHvC80r7U/LqAd4hQyopDezC60PO2qF5GuIwALut2cl5rK1VWHsqTp0oqoJJWjiv6uXKqsO+Q2OO0C3MmQ==}
     dev: false
 
   /optionator@0.9.3:
