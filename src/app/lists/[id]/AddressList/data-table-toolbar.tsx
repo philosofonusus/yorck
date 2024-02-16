@@ -77,16 +77,60 @@ export const DataTableToolbar = <TData,>({
           <Star className="w-4 h-4" />
         </Toggle>
 
-        <Slider
-          defaultValue={[minValue, maxValue]}
-          min={minValue}
-          max={maxValue}
-          onValueChange={([min, max]) => {
-            table.getColumn("usd_total")?.setFilterValue({ min, max });
-          }}
-          className="w-28"
-          step={maxValue / 100}
-        />
+        <div className="flex space-x-2">
+          <Slider
+            defaultValue={[minValue, maxValue]}
+            min={minValue}
+            max={maxValue}
+            value={[
+              (
+                table.getColumn("usd_total")?.getFilterValue() as {
+                  min: number;
+                  max: number;
+                }
+              )?.min ?? 0,
+              (
+                table.getColumn("usd_total")?.getFilterValue() as {
+                  min: number;
+                  max: number;
+                }
+              )?.max ?? maxValue,
+            ]}
+            minStepsBetweenThumbs={1}
+            onValueChange={([min, max]) => {
+              table.getColumn("usd_total")?.setFilterValue({ min, max });
+            }}
+            className="w-28"
+            step={maxValue / 300}
+          />
+          {table.getColumn("usd_total")?.getFilterValue() !== undefined && (
+            <>
+              <span className="text-xs text-white">
+                {(
+                  table.getColumn("usd_total")?.getFilterValue() as {
+                    min: number;
+                    max: number;
+                  }
+                )?.min.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }) ?? "$0.00"}
+                {" - "}
+                {(
+                  (
+                    table.getColumn("usd_total")?.getFilterValue() as {
+                      min: number;
+                      max: number;
+                    }
+                  )?.max ?? maxValue
+                ).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </span>
+            </>
+          )}
+        </div>
 
         {isFiltered && (
           <Button
