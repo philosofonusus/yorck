@@ -1,19 +1,7 @@
 "use client";
-import { TabsContent } from "@/components/ui/tabs";
-import { toast } from "sonner";
-import { listInfo, tableData } from "../AddressList/state";
-import { Card } from "@/components/ui/card";
-import { useCopyToClipboard } from "usehooks-ts";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMemo } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
-import { balanceDataEntry } from "@/lib/validations/lists";
+import { Card } from "@/components/ui/card";
 import {
   Popover,
   PopoverContent,
@@ -21,9 +9,20 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { TabsContent } from "@/components/ui/tabs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { balanceDataEntry } from "@/lib/validations/lists";
 import { useSelector } from "@legendapp/state/react";
-import { useControls, folder } from "leva";
-import { useRouter } from "next/navigation";
+import { folder, useControls } from "leva";
+import { useMemo } from "react";
+import { toast } from "sonner";
+import { useCopyToClipboard } from "usehooks-ts";
+import { listInfo, tableData } from "../AddressList/state";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -50,6 +49,7 @@ const PortfolioTab: React.FC = () => {
                 JSON.parse(el!.balances) as Array<
                   balanceDataEntry & {
                     owner: string;
+                    trueId: string;
                     hits: {
                       address: string;
                       amount: number;
@@ -58,6 +58,7 @@ const PortfolioTab: React.FC = () => {
                 >
               ).map((b) => {
                 b.owner = el!.address;
+                b.trueId = b.id + b.chain;
                 b.hits = [
                   {
                     amount: b.amount,
@@ -74,14 +75,15 @@ const PortfolioTab: React.FC = () => {
                     address: string;
                     amount: number;
                   }[];
+                  trueId: string;
                   owner: string;
                 }
               >,
               cur,
             ) {
-              const id = cur.id,
+              const id = cur.trueId,
                 found = accumulator.find(function (el) {
-                  return el.id == id;
+                  return el.trueId == id;
                 });
               if (found) {
                 found.amount += cur.amount;
@@ -90,6 +92,7 @@ const PortfolioTab: React.FC = () => {
                   amount: cur.amount,
                 });
               } else accumulator.push(cur);
+
               return accumulator;
             }, [])
             .filter((el) => el.price! && el.price * el.amount > minAmount)

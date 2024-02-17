@@ -30,6 +30,7 @@ import { listInfo, tableData } from "./state";
 import { InferModel } from "drizzle-orm";
 import { addressLists } from "@/lib/db/schema";
 import { MonitoredAddress } from "./columns";
+import { useControls } from "leva";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -43,9 +44,15 @@ export function DataTable<TData, TValue>({
   list,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
+  const { traderMode } = useControls({
+    traderMode: false,
+  });
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      winrate: false,
+      roi: false,
+    });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -56,9 +63,9 @@ export function DataTable<TData, TValue>({
     columns,
     state: {
       sorting,
-      columnVisibility,
       rowSelection,
       columnFilters,
+      columnVisibility,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -107,6 +114,20 @@ export function DataTable<TData, TValue>({
       ),
     );
   }, [list.favorites, list.addresses]);
+
+  React.useEffect(() => {
+    if (traderMode) {
+      setColumnVisibility({
+        winrate: true,
+        roi: true,
+      });
+    } else {
+      setColumnVisibility({
+        winrate: false,
+        roi: false,
+      });
+    }
+  }, [traderMode]);
 
   return (
     <div id="address-list" className="space-y-4">
