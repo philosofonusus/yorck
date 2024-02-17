@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import DataTableFavoriteStar from "./data-table-favorite-star";
+import { balanceDataEntry } from "@/lib/validations/lists";
+import { cn } from "@/lib/utils";
 
 export type MonitoredAddress = {
   address: string;
@@ -76,6 +78,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
       );
     },
   },
+
   {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ROI" />
@@ -85,6 +88,47 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
       return <span className="w-20 space-x-2">{amount.toFixed(1)}%</span>;
     },
     accessorKey: "roi",
+  },
+  {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Stablecoins" />
+    ),
+    cell: ({ row }) => {
+      const balances = JSON.parse(row.original.balances);
+      const stableCoinTotal = (balances as Array<balanceDataEntry>)
+        .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
+        .map((el) => {
+          return el.amount * el.price!;
+        })
+        .reduce((a: number, b: number) => a + b, 0);
+
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(stableCoinTotal);
+      const usdTotal = parseFloat(row.getValue("usd_total"));
+
+      return (
+        <span className="w-20 space-x-2">
+          {formatted}{" "}
+          <code
+            className={cn(
+              "relative rounded px-[0.3rem] bg-destructive bg-green-500 py-[0.2rem] font-mono text-sm",
+              isFinite(usdTotal / stableCoinTotal)
+                ? usdTotal / stableCoinTotal > 2
+                  ? "bg-green-500"
+                  : "bg-destructive"
+                : "bg-muted",
+            )}
+          >
+            {isFinite(usdTotal / stableCoinTotal)
+              ? "1/" + (usdTotal / stableCoinTotal).toFixed(2)
+              : "N/A"}
+          </code>
+        </span>
+      );
+    },
+    accessorKey: "STCR",
   },
   {
     header: ({ column }) => (

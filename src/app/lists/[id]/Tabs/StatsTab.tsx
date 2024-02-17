@@ -28,26 +28,17 @@ export default function StatsTab() {
     return res;
   }, [selectedRows]);
 
-  const stableCoinTotal = selectedRows
-    .flatMap((el) => JSON.parse(el!.balances) as Array<balanceDataEntry>)
-    .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
-    .map((el) => {
-      return el.amount * el.price!;
-    })
-    .reduce((a: number, b: number) => a + b, 0);
-  console.log(stableCoinTotal, usdTotal, "totals");
-  // const stableCoinTotal = useMemo(() => {
-  //   const res = selectedRows
-  //     .flatMap((el) => JSON.parse(el!.balances) as Array<balanceDataEntry>)
-  //     .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
-  //     .map((el) => {
-  //       console.log(el, "e1");
-  //       return el.amount * el.price!;
-  //     })
-  //     .reduce((a: number, b: number) => a + b, 0);
-  //   return res;
-  // }, [selectedRows]);
-  //
+  const stableCoinTotal = useMemo(() => {
+    const res = selectedRows
+      .flatMap((el) => JSON.parse(el!.balances) as Array<balanceDataEntry>)
+      .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
+      .map((el) => {
+        return el.amount * el.price!;
+      })
+      .reduce((a: number, b: number) => a + b, 0);
+    return res;
+  }, [selectedRows]);
+
   return selectedRows.length ? (
     <TabsContent data-lenis-prevent value="stats">
       <Card className="p-6">
@@ -74,12 +65,16 @@ export default function StatsTab() {
             <code
               className={cn(
                 "relative rounded px-[0.3rem] bg-destructive bg-green-500 py-[0.2rem] font-mono text-sm",
-                usdTotal / stableCoinTotal > 1
-                  ? "bg-green-500"
-                  : "bg-destructive",
+                isFinite(usdTotal / stableCoinTotal)
+                  ? usdTotal / stableCoinTotal > 2
+                    ? "bg-green-500"
+                    : "bg-destructive"
+                  : "bg-muted",
               )}
             >
-              {"1/" + (usdTotal / stableCoinTotal).toFixed(2)}
+              {isFinite(usdTotal / stableCoinTotal)
+                ? "1/" + (usdTotal / stableCoinTotal).toFixed(2)
+                : "N/A"}
             </code>
           </div>
           {traderMode ? (
