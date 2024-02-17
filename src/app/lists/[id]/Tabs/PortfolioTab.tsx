@@ -34,7 +34,6 @@ const PortfolioTab: React.FC = () => {
   const selectedRows = useSelector(listInfo.selectedRows);
   const table = useSelector(tableData);
   const [_, copy] = useCopyToClipboard();
-  const router = useRouter();
 
   const { minAmount } = useControls("Portfolio", {
     balances: folder({
