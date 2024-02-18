@@ -2,7 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { listInfo } from "../AddressList/state";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import Image from "next/image";
 import {
   Tooltip,
@@ -20,6 +20,7 @@ import { useAsyncMemo } from "@/lib/use-async-memo";
 import { useCopyToClipboard } from "usehooks-ts";
 import { toast } from "sonner";
 import { useSelector } from "@legendapp/state/react";
+import { useControls } from "leva";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -239,12 +240,55 @@ const TxEntry = ({
   );
 };
 
-const minTxValue = 0;
-const isHideTrashTransactionsModeActive = true;
+async function TXList({
+  transactionHistoryList,
+}: {
+  transactionHistoryList: any[];
+}) {
+  const dictionary = Object.assign(
+    {},
+    ...(await Promise.allSettled([
+      bulkCexLookup([
+        ...new Set(
+          transactionHistoryList.map((el: any) => el.cex_id).filter(Boolean),
+        ),
+      ] as string[]),
+      bulkProjectLookup([
+        ...new Set(
+          transactionHistoryList
+            .map((el: any) => el.project_id)
+            .filter(Boolean),
+        ),
+      ] as string[]),
+      bulkTokenLookup([
+        ...new Set(
+          transactionHistoryList.flatMap((el: any) =>
+            [
+              ...el.receives?.map((elx: any) => elx.token_id),
+              ...el.sends?.map((elx: any) => elx.token_id),
+            ].filter(Boolean),
+          ),
+        ),
+      ] as string[]),
+    ]).then((res) => {
+      //@ts-ignore
+      return res.map((el) => el.value);
+    })),
+  );
+  return transactionHistoryList.map((tx: any, idx: number) => {
+    return <TxEntry dictionary={dictionary} tx={tx} key={idx} />;
+  });
+}
 
 export default function TxListTab() {
   const selectedRows = useSelector(listInfo.selectedRows);
-  const [isDictionaryPending, setIsDictionaryPending] = useState(false);
+  const { minTxValue, isHideTrashTransactionsModeActive } = useControls(
+    "TX list",
+    {
+      minTxValue: 0,
+      isHideTrashTransactionsModeActive: false,
+    },
+  );
 
   const transactionHistoryList = useMemo(
     () =>
@@ -282,47 +326,12 @@ export default function TxListTab() {
     [selectedRows],
   );
 
-  const dictionary = useAsyncMemo(async () => {
-    setIsDictionaryPending(true);
-    return Object.assign(
-      {},
-      ...(await Promise.allSettled([
-        bulkCexLookup([
-          ...new Set(
-            transactionHistoryList.map((el: any) => el.cex_id).filter(Boolean),
-          ),
-        ] as string[]),
-        bulkProjectLookup([
-          ...new Set(
-            transactionHistoryList
-              .map((el: any) => el.project_id)
-              .filter(Boolean),
-          ),
-        ] as string[]),
-        bulkTokenLookup([
-          ...new Set(
-            transactionHistoryList.flatMap((el: any) =>
-              [
-                ...el.receives?.map((elx: any) => elx.token_id),
-                ...el.sends?.map((elx: any) => elx.token_id),
-              ].filter(Boolean),
-            ),
-          ),
-        ] as string[]),
-      ]).then((res) => {
-        setIsDictionaryPending(false);
-        //@ts-ignore
-        return res.map((el) => el.value);
-      })),
-    );
-  }, [transactionHistoryList]);
-
-  return selectedRows?.length && !isDictionaryPending ? (
+  return selectedRows?.length ? (
     <TabsContent data-lenis-prevent value="transactions">
       <Card className="p-6 overflow-y-scroll max-h-[400px]">
-        {transactionHistoryList.map((tx: any, idx: number) => {
-          return <TxEntry dictionary={dictionary} tx={tx} key={idx} />;
-        })}
+        <Suspense fallback={<span>Loading...</span>}>
+          <TXList transactionHistoryList={transactionHistoryList} />
+        </Suspense>
       </Card>
     </TabsContent>
   ) : null;
