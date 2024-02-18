@@ -286,7 +286,7 @@ export default function TxListTab() {
     "TX list",
     {
       minTxValue: 0,
-      isHideTrashTransactionsModeActive: false,
+      isHideTrashTransactionsModeActive: true,
     },
   );
 
