@@ -13,6 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { DropdownMenuShortcut } from "./ui/dropdown-menu";
+import { Link } from "lucide-react";
 
 export default function Header() {
   const { user } = useUser();
@@ -20,9 +21,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur">
       <div className="container flex items-center justify-between py-3">
-        <span className="text-2xl font-semibold leading-none tracking-tight">
-          Yorck
-        </span>
+        <Link href="/lists">
+          <span className="text-2xl font-semibold leading-none tracking-tight">
+            Yorck
+          </span>
+        </Link>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
