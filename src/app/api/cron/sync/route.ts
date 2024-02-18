@@ -8,6 +8,7 @@ export async function GET() {
   const lists = await db.select().from(addressLists);
 
   const addresses = lists.map((list) => list.addresses as string[]).flat();
-  await monitofresh.refreshAddressData(addresses, env.API_TOKEN);
+  monitofresh.refreshAddressData(addresses, env.API_TOKEN);
+
   return NextResponse.json({ ok: true });
 }
