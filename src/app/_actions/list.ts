@@ -52,7 +52,7 @@ export async function deleteAddressesFromListAction({
       (Array.isArray(list.addresses)
         ? (list.addresses as string[])
         : []
-      ).filter((address) => !addresses.includes(address))
+      ).filter((address) => !addresses.includes(address)),
     ),
   ];
 
@@ -61,12 +61,12 @@ export async function deleteAddressesFromListAction({
       (Array.isArray(list.favorites)
         ? (list.favorites as string[])
         : []
-      ).filter((address) => !addresses.includes(address))
+      ).filter((address) => !addresses.includes(address)),
     ),
   ];
-  for (const address of addresses) {
-    await redis.del(`history_list:${address}`, `account:${address}`);
-  }
+  // for (const address of addresses) {
+  //   await redis.del(`history_list:${address}`, `account:${address}`);
+  // }
 
   await db
     .update(addressLists)
@@ -120,7 +120,7 @@ export async function createListAction({
     userId: userId,
     addresses: [
       ...new Set(
-        addresses.split(/[\n,]/).map((address) => address.toLowerCase().trim())
+        addresses.split(/[\n,]/).map((address) => address.toLowerCase().trim()),
       ),
     ],
   });
