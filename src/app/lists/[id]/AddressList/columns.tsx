@@ -126,7 +126,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
         </span>
       );
     },
-    accessorKey: "STCR",
+    accessorKey: "stableCoinTotal",
   },
   {
     header: ({ column }) => (

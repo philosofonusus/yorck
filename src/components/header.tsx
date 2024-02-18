@@ -13,7 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { DropdownMenuShortcut } from "./ui/dropdown-menu";
-import { Link } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   const { user } = useUser();
