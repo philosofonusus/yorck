@@ -17,9 +17,9 @@ export async function GET() {
       json: {
         addresses,
       },
+      timeout: false,
       headers: {
         Authorization: env.API_TOKEN,
-        "Access-Control-Allow-Origin": "*",
       },
     },
   );
