@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { env } from "../../../../env.mjs";
 import ky from "ky";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const lists = await db.select().from(addressLists);
 
