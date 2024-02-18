@@ -4,6 +4,7 @@ import { authMiddleware } from "@clerk/nextjs/server";
 import { UserRole } from "./types/user";
 
 export default authMiddleware({
+  ignoredRoutes: "/api/cron",
   // Public routes are routes that don't require authentication
   publicRoutes: [
     "/",
@@ -48,5 +49,5 @@ export default authMiddleware({
 //   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api)(.*)"],
 // };
 export const config = {
-  matcher: ["/((?!.*\\..*|_next|api/cron).*)", "/", "/(api)(.*)"],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api)(.*)"],
 };
