@@ -323,7 +323,7 @@ export default function TxListTab() {
           return true;
         })
         .sort((a: any, b: any) => b.time_at - a.time_at),
-    [selectedRows],
+    [selectedRows, isHideTrashTransactionsModeActive, minTxValue],
   );
 
   return selectedRows?.length ? (

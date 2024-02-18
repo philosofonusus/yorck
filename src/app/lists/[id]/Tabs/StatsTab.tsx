@@ -1,14 +1,14 @@
 "use client";
-import { listInfo } from "../AddressList/state";
-import { TabsContent } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
 import NetCurveChart from "@/components/net-curve-chart";
-import { UTCTimestamp } from "lightweight-charts";
-import { useSelector } from "@legendapp/state/react";
-import { useCallback, useMemo } from "react";
+import { Card } from "@/components/ui/card";
+import { TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { balanceDataEntry } from "@/lib/validations/lists";
+import { useSelector } from "@legendapp/state/react";
 import { useControls } from "leva";
+import { UTCTimestamp } from "lightweight-charts";
+import { useMemo } from "react";
+import { listInfo } from "../AddressList/state";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -30,11 +30,7 @@ export default function StatsTab() {
 
   const stableCoinTotal = useMemo(() => {
     const res = selectedRows
-      .flatMap((el) => JSON.parse(el!.balances) as Array<balanceDataEntry>)
-      .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
-      .map((el) => {
-        return el.amount * el.price!;
-      })
+      .map((el) => el?.stableCoinTotal as number)
       .reduce((a: number, b: number) => a + b, 0);
     return res;
   }, [selectedRows]);
@@ -65,16 +61,19 @@ export default function StatsTab() {
             <code
               className={cn(
                 "relative rounded px-[0.3rem] bg-destructive bg-green-500 py-[0.2rem] font-mono text-sm",
-                isFinite(usdTotal / stableCoinTotal)
+                isFinite(usdTotal / stableCoinTotal) &&
+                  (stableCoinTotal / usdTotal) * 100 > 1
                   ? usdTotal / stableCoinTotal > 2
                     ? "bg-green-500"
                     : "bg-destructive"
                   : "bg-muted",
               )}
             >
-              {isFinite(usdTotal / stableCoinTotal)
-                ? "1/" + (usdTotal / stableCoinTotal).toFixed(2)
-                : "N/A"}
+              {(stableCoinTotal / usdTotal) * 100 > 1
+                ? isFinite(usdTotal / stableCoinTotal)
+                  ? "1/" + (usdTotal / stableCoinTotal).toFixed(2)
+                  : "N/A"
+                : "<1%"}
             </code>
           </div>
           {traderMode ? (

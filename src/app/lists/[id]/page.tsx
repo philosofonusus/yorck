@@ -18,7 +18,11 @@ import TxListTab from "./Tabs/TxListTab";
 import { currentUser } from "@clerk/nextjs";
 import z from "zod";
 import { redirect, notFound } from "next/navigation";
-import { accountDataSchema, txDataSchema } from "@/lib/validations/lists";
+import {
+  accountDataSchema,
+  balanceDataEntry,
+  txDataSchema,
+} from "@/lib/validations/lists";
 import { LevaCog } from "./LevaCog";
 
 const listDataSchema = z.record(
@@ -122,6 +126,12 @@ export default async function ListPage({
               return {
                 address,
                 net_curve: JSON.stringify(addressData.account.net_curve),
+                stableCoinTotal: addressData.account.balances
+                  .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
+                  .map((el: any) => {
+                    return el.amount * el.price;
+                  })
+                  .reduce((a: number, b: number) => a + b, 0),
                 isFavorite: (list.favorites as string[]).includes(address),
                 usd_total: addressData.account.usd_total.toString(),
                 history_list: JSON.stringify(addressData.history_list),

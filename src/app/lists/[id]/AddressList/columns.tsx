@@ -15,6 +15,7 @@ export type MonitoredAddress = {
   history_list: string;
   balances: string;
   chains: string[];
+  stableCoinTotal: number;
   winrate: number;
   roi: number;
 };
@@ -94,13 +95,7 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
       <DataTableColumnHeader column={column} title="Stablecoins" />
     ),
     cell: ({ row }) => {
-      const balances = JSON.parse(row.original.balances);
-      const stableCoinTotal = (balances as Array<balanceDataEntry>)
-        .filter((el) => new RegExp(/USD|DAI/, "g").test(el.symbol))
-        .map((el) => {
-          return el.amount * el.price!;
-        })
-        .reduce((a: number, b: number) => a + b, 0);
+      const stableCoinTotal = row.getValue("stableCoinTotal") as number;
 
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -114,16 +109,19 @@ export const columns: ColumnDef<MonitoredAddress>[] = [
           <code
             className={cn(
               "relative rounded px-[0.3rem] bg-destructive bg-green-500 py-[0.2rem] font-mono text-sm",
-              isFinite(usdTotal / stableCoinTotal)
+              isFinite(usdTotal / stableCoinTotal) &&
+                (stableCoinTotal / usdTotal) * 100 > 1
                 ? usdTotal / stableCoinTotal > 2
                   ? "bg-green-500"
                   : "bg-destructive"
                 : "bg-muted",
             )}
           >
-            {isFinite(usdTotal / stableCoinTotal)
-              ? "1/" + (usdTotal / stableCoinTotal).toFixed(2)
-              : "N/A"}
+            {(stableCoinTotal / usdTotal) * 100 > 1
+              ? isFinite(usdTotal / stableCoinTotal)
+                ? "1/" + (usdTotal / stableCoinTotal).toFixed(2)
+                : "N/A"
+              : "<1%"}
           </code>
         </span>
       );
