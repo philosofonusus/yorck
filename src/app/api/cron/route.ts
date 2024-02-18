@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { addressLists } from "@/lib/db/schema";
 import { monitofresh } from "@/services/monitofresh";
 import { NextResponse } from "next/server";
-import { env } from "../../../../../env.mjs";
+import { env } from "../../../../env.mjs";
 
 export async function GET() {
   const lists = await db.select().from(addressLists);
