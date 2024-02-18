@@ -48,5 +48,5 @@ export default authMiddleware({
 //   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api)(.*)"],
 // };
 export const config = {
-  matcher: ["/((?!.*\\..*|_next|api).*)", "/", "/"],
+  matcher: ["/((?!.*\\..*|_next|api/cron).*)", "/", "/(api)(.*)"],
 };
