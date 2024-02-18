@@ -1,29 +1,24 @@
 import { Badge } from "@/components/ui/badge";
-import { CardHeader, Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/db";
 import { addressLists } from "@/lib/db/schema";
-import { eq, and } from "drizzle-orm";
-import { ChevronLeft, CogIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { ListNameInput } from "./ListNameInput";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "./AddressList/data-table";
-import { columns } from "./AddressList/columns";
-import StatsTab from "./Tabs/StatsTab";
 import { redis } from "@/lib/redis";
 import { statsCalculator } from "@/lib/statsCalculator";
-import PortfolioTab from "./Tabs/PortfolioTab";
-import TxListTab from "./Tabs/TxListTab";
+import { accountDataSchema, txDataSchema } from "@/lib/validations/lists";
 import { currentUser } from "@clerk/nextjs";
+import { and, eq } from "drizzle-orm";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import z from "zod";
-import { redirect, notFound } from "next/navigation";
-import {
-  accountDataSchema,
-  balanceDataEntry,
-  txDataSchema,
-} from "@/lib/validations/lists";
+import { columns } from "./AddressList/columns";
+import { DataTable } from "./AddressList/data-table";
 import { LevaCog } from "./LevaCog";
+import { ListNameInput } from "./ListNameInput";
+import PortfolioTab from "./Tabs/PortfolioTab";
+import StatsTab from "./Tabs/StatsTab";
+import TxListTab from "./Tabs/TxListTab";
 
 const listDataSchema = z.record(
   z.string(),
