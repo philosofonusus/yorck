@@ -1,9 +1,11 @@
 "use client";
+import {
+  bulkCexLookup,
+  bulkProjectLookup,
+  bulkTokenLookup,
+} from "@/app/_actions/dictionary";
 import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
-import { listInfo } from "../AddressList/state";
-import { Suspense, useMemo, useState } from "react";
-import Image from "next/image";
 import {
   Tooltip,
   TooltipContent,
@@ -11,16 +13,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { chainList } from "@/lib/chainlist";
-import {
-  bulkCexLookup,
-  bulkProjectLookup,
-  bulkTokenLookup,
-} from "@/app/_actions/dictionary";
-import { useAsyncMemo } from "@/lib/use-async-memo";
-import { useCopyToClipboard } from "usehooks-ts";
-import { toast } from "sonner";
 import { useSelector } from "@legendapp/state/react";
 import { useControls } from "leva";
+import Image from "next/image";
+import { RefObject, Suspense, useMemo, useRef } from "react";
+import { toast } from "sonner";
+import { useCopyToClipboard } from "usehooks-ts";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { listInfo } from "../AddressList/state";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -240,10 +240,51 @@ const TxEntry = ({
   );
 };
 
+function VirtualTXList({
+  data,
+  dictionary,
+  parentRef,
+}: {
+  data: any[];
+  dictionary: any;
+  parentRef: RefObject<HTMLDivElement>;
+}) {
+  const rowVirtualizer = useVirtualizer({
+    count: data.length,
+    overscan: 1,
+    estimateSize: () => 120,
+    getScrollElement: () => parentRef.current,
+  });
+  return (
+    <div
+      className="w-full relative"
+      style={{ height: rowVirtualizer.getTotalSize() + "px" }}
+    >
+      {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+        const tx = data[virtualRow.index];
+        return (
+          <div
+            key={virtualRow.key}
+            className="absolute top-0 left-0 w-full"
+            style={{
+              height: `${virtualRow.size}px`,
+              transform: `translateY(${virtualRow.start}px)`,
+            }}
+          >
+            <TxEntry tx={tx} dictionary={dictionary} />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 async function TXList({
   transactionHistoryList,
+  parentRef,
 }: {
   transactionHistoryList: any[];
+  parentRef: RefObject<HTMLDivElement>;
 }) {
   const dictionary = Object.assign(
     {},
@@ -275,13 +316,18 @@ async function TXList({
       return res.map((el) => el.value);
     })),
   );
-  return transactionHistoryList.map((tx: any, idx: number) => {
-    return <TxEntry dictionary={dictionary} tx={tx} key={idx} />;
-  });
+  return (
+    <VirtualTXList
+      data={transactionHistoryList}
+      dictionary={dictionary}
+      parentRef={parentRef}
+    />
+  );
 }
 
 export default function TxListTab() {
   const selectedRows = useSelector(listInfo.selectedRows);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { minTxValue, isHideTrashTransactionsModeActive } = useControls(
     "TX list",
     {
@@ -328,9 +374,12 @@ export default function TxListTab() {
 
   return selectedRows?.length ? (
     <TabsContent data-lenis-prevent value="transactions">
-      <Card className="p-6 overflow-y-scroll max-h-[400px]">
+      <Card ref={scrollRef} className="p-6 overflow-y-scroll max-h-[400px]">
         <Suspense fallback={<span>Loading...</span>}>
-          <TXList transactionHistoryList={transactionHistoryList} />
+          <TXList
+            parentRef={scrollRef}
+            transactionHistoryList={transactionHistoryList}
+          />
         </Suspense>
       </Card>
     </TabsContent>

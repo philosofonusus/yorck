@@ -3,7 +3,6 @@ import NetCurveChart from "@/components/net-curve-chart";
 import { Card } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { balanceDataEntry } from "@/lib/validations/lists";
 import { useSelector } from "@legendapp/state/react";
 import { useControls } from "leva";
 import { UTCTimestamp } from "lightweight-charts";

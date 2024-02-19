@@ -38,6 +38,7 @@
     "@studio-freight/lenis": "^1.0.34",
     "@studio-freight/tempus": "^0.0.38",
     "@tanstack/react-table": "^8.11.8",
+    "@tanstack/react-virtual": "^3.1.1",
     "@types/react": "18.2.14",
     "@upstash/redis": "^1.28.3",
     "boring-avatars": "^1.10.1",

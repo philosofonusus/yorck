@@ -51,7 +51,6 @@ export default async function ListPage({
   if (!list) {
     return notFound();
   }
-
   console.time("data");
   const data = listDataSchema.parse(
     Object.assign(
